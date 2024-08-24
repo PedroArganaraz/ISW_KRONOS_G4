@@ -7,11 +7,12 @@
 - Auxiliares de Trabajos Prácticos: Mickaela Crespo & Constanza Garnero
 
 ### Información del grupo
-##### Grupo número: 4
-
+#### Grupo N°: 4
 | Apellido y Nombre | Legajo |
 |--------------|------|
 | Argañaraz Pedro | 85735 |
+| Ferraro Francisco | 88153 |
+
 
 ## Estructura del repositorio
 
