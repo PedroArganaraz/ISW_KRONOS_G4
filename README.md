@@ -34,10 +34,28 @@
 | Bibliografia | ISW_BIBLIO_<<Nombre libro>>_<<Edicion>>_<<Idioma>>.pdf |
 | Plantillas | ISW_TEMPLATE_<<Descripcion>>_2024.pdf |
 | TP de Investigacion | TPINV_<<NroTP>>_<<Descripcion>>_RES_2024_KRONOS.pdf |
-| Simulacros SIM_<<Nro Parcial>>_<<Descripcion>>_RES_2024_KRONOS.pdf <br> SIM_<<NroParcial>>_<<Descripcion>>_RESP_2024_KRONOS.pdf |
+| Simulacros | SIM_<<Nro Parcial>>_<<Descripcion>>_RES_2024_KRONOS.pdf <br> SIM_<<NroParcial>>_<<Descripcion>>_RESP_2024_KRONOS.pdf |
 | Programa | ISW_PROG_2024.pdf |
 | Cronograma | ISW_CRON_4K1_2024.xslx |
 | Trabajo practico programable | TPPR_<<NroTP>>_<<Descripcion>>_2024_KRONOS.<<ext>> |
 
 
 ## Glosario
+| Término | Descripción |
+|--------------|------|
+| TPNE | Trabajo practico no evaluable |
+| TPE | Trabajo practrico evaluable |
+| RES | Resolución |
+| EDIT | Editado |
+| ENTR | Entrega |
+| KRONOS | Nombre del Grupo |
+| ISW | Ingeniería de Software |
+| PRES | Presentación |
+| BIBLIO | Bibliografía |
+| TPINV | Trabajo Práctico Investigación |
+| SIM | Simulacro |
+| RESP | Respuesta |
+| PROG | Programa |
+| CRON | Cronograma |
+| TPPR | Trabajo Práctico Programable |
+
