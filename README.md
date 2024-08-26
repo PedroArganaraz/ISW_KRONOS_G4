@@ -26,18 +26,18 @@
 ## Listado de Ítems de configuración
 | Nombre Item Configuración | Regla de Nombrado |
 |--------------|------|
-| Tp NO EVALUABLES | TPNE_<<Nro TP>>_<<Descripcion>>_RES_ENTR_2024_KRONOS.pdf <br> TPNE_<<Nro TP>>_<<Descripcion>>_RES_EDIT_2024_KRONOS.docx |
-| Tp evaluables | TPE_<<Nro TP>>_<<Descripcion>>_RES_2024_KRONOS.pdf <br> TPE_<<Nro TP>>_<<Descripcion>>_RES_EDIT_2024_KRONOS>.docx |
-| Consigna | <<tipo de tp>>_<<Nro TP>>_<<Descripcion>>_CON_2024_KRONOS.pdf |
-| Guia | ISW_GUIA_<<Descripcion>>_2024.pdf |
-| Presentaciones | ISW_PRES_<<Nro>>_<<Descripcion>>_2024.pdf |
-| Bibliografia | ISW_BIBLIO_<<Nombre libro>>_<<Edicion>>_<<Idioma>>.pdf |
-| Plantillas | ISW_TEMPLATE_<<Descripcion>>_2024.pdf |
-| TP de Investigacion | TPINV_<<NroTP>>_<<Descripcion>>_RES_2024_KRONOS.pdf |
-| Simulacros | SIM_<<Nro Parcial>>_<<Descripcion>>_RES_2024_KRONOS.pdf <br> SIM_<<NroParcial>>_<<Descripcion>>_RESP_2024_KRONOS.pdf |
+| Tp NO EVALUABLES | TPNE_<NroTP>_<Descripcion>_RES_ENTR_2024_KRONOS.pdf <br> TPNE_<NroTP>_<Descripcion>_RES_EDIT_2024_KRONOS.docx |
+| Tp evaluables | TPE_<<NroTP>>_<Descripcion>_RES_2024_KRONOS.pdf <br> TPE_<NroTP>_<Descripcion>_RES_EDIT_2024_KRONOS.docx |
+| Consigna | <TipoDeTP>_<NroTP>_<Descripcion>_CON_2024_KRONOS.pdf |
+| Guia | ISW_GUIA_<Descripcion>_2024.pdf |
+| Presentaciones | ISW_PRES_<Nro>_<Descripcion>_2024.pdf |
+| Bibliografia | ISW_BIBLIO_<NombreLibro>_<Edicion>_<Idioma>.pdf |
+| Plantillas | ISW_TEMPLATE_<Descripcion>_2024.pdf |
+| TP de Investigacion | TPINV_<NroTP>_<Descripcion>_RES_2024_KRONOS.pdf |
+| Simulacros | SIM_<NroParcial>_<Descripcion>_RES_2024_KRONOS.pdf <br> SIM_<NroParcial>_<Descripcion>_RESP_2024_KRONOS.pdf |
 | Programa | ISW_PROG_2024.pdf |
 | Cronograma | ISW_CRON_4K1_2024.xslx |
-| Trabajo practico programable | TPPR_<<NroTP>>_<<Descripcion>>_2024_KRONOS.<<ext>> |
+| Trabajo practico programable | TPPR_<NroTP>_<Descripcion>_2024_KRONOS.<ext> |
 
 
 ## Glosario
