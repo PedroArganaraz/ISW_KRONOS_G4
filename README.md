@@ -29,7 +29,7 @@
 ## Listado de Ítems de configuración
 | Nombre Item Configuración | Regla de Nombrado |
 |--------------|------|
-| Bibliografía | ISW&#95;BIBLIO&#95;&lt;NombreLibro&gt;&#95;&lt;Editorial&gt;&#95;&lt;Idioma&gt;.pdf |
+| Bibliografía | ISW&#95;BIBLIO&#95;&lt;NombreLibro&gt;&#95;&lt;Idioma&gt;.pdf |
 | Consigna | &lt;TipoDeTP&gt;&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;CON&#95;2024&#95;KRONOS.pdf |
 | Cronograma | ISW&#95;CRON&#95;4K1&#95;2024.xslx |
 | Guía | ISW&#95;GUIA&#95;&lt;Descripcion&gt;&#95;2024.pdf |
