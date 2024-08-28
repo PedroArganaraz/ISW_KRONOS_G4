@@ -22,7 +22,8 @@
 
 
 ## Estructura del repositorio
-![Estructura del Repositorio](https://github.com/user-attachments/assets/0e72a848-860b-45cc-a410-908c48d0376b)
+![Mapa del sitio](https://github.com/user-attachments/assets/43eddc01-70cc-4eaa-b527-63bebbd6be29)
+
 
 
 ## Listado de Ítems de configuración
