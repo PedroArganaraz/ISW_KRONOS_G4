@@ -54,6 +54,8 @@
 | CRON | Cronograma |
 | EDIT | Editable |
 | ENTR | Entregable |
+| ESP | Idioma Español |
+| ING | Idioma Inglés |
 | ISW | Ingeniería de Software |
 | KRONOS | Nombre del Grupo |
 | PRES | Presentación |
@@ -73,7 +75,7 @@
 | &lt;Descripción&gt; | Breve explicación de lo que trata el item |
 | &lt;Editorial&gt; | Representa el nombre de la editorial que ha publicado el libro mencionado |
 | &lt;ext&gt; | Representa el tipo de extensión del archivo |
-| &lt;Idioma&gt; | Representa el idioma en el que esta escrito el libro mencionado |
+| &lt;Idioma&gt; | Representa el idioma en el que esta escrito el libro mencionado, pudiendo ser ESP o ING |
 | &lt;NombreLibro&gt; | Representa el título del libro |
 | &lt;NroParcial&gt; | Numero Natural Correspondiente al Numero de Parcial |
 | &lt;NroPres&gt; | Numero Natural Correspondiente al Numero de la Presentación |
