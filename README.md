@@ -60,13 +60,12 @@
 | PROG | Programa |
 | RES | Resolución |
 | RESCAT | Resolución Cátedra |
-| RESP | Respuesta |
 | SIM | Simulacro |
 | TP | Trabajo Práctico |
+| TPE | Trabajo practrico evaluable |
 | TPINV | Trabajo Práctico Investigación |
 | TPNE | Trabajo practico no evaluable |
 | TPPR | Trabajo Práctico Programable |
-| TPE | Trabajo practrico evaluable |
 
 
 | Variable | Descripción |
