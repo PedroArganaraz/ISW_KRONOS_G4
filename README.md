@@ -6,6 +6,7 @@
 - Titular: Judith Meles
 - Auxiliares de Trabajos Prácticos: Mickaela Crespo & Constanza Garnero
 
+
 ### Información del grupo
 #### Grupo N°: 4
 | Apellido y Nombre | Legajo |
@@ -23,25 +24,26 @@
 ## Estructura del repositorio
 ![Estructura del Repositorio](https://github.com/user-attachments/assets/0e72a848-860b-45cc-a410-908c48d0376b)
 
+
 ## Listado de Ítems de configuración
 | Nombre Item Configuración | Regla de Nombrado |
 |--------------|------|
-| Tp No Evaluables Entregable | TPNE&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;RES&#95;ENTR&#95;2024&#95;KRONOS.pdf|
-| Tp No Evaluables Editable | TPNE&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;RES&#95;EDIT&#95;2024&#95;KRONOS.docx |
-| Tp Evaluables | TPE&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;RES&#95;ENTR&#95;2024&#95;KRONOS.pdf |
-| Tp Evaluables | TPE&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;RES&#95;EDIT&#95;2024&#95;KRONOS.docx |
-| Consigna | &lt;TipoDeTP&gt;&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;CON&#95;2024&#95;KRONOS.pdf |
-| Guía | ISW&#95;GUIA&#95;&lt;Descripcion&gt;&#95;2024.pdf |
-| Presentaciones | ISW&#95;PRES&#95;&lt;NroPres&gt;&#95;&lt;Descripcion&gt;&#95;2024.pdf |
 | Bibliografía | ISW&#95;BIBLIO&#95;&lt;NombreLibro&gt;&#95;&lt;Editorial&gt;&#95;&lt;Idioma&gt;.pdf |
+| Consigna | &lt;TipoDeTP&gt;&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;CON&#95;2024&#95;KRONOS.pdf |
+| Cronograma | ISW&#95;CRON&#95;4K1&#95;2024.xslx |
+| Guía | ISW&#95;GUIA&#95;&lt;Descripcion&gt;&#95;2024.pdf |
 | Plantillas | ISW&#95;TEMPLATE&#95;&lt;Descripcion&gt;&#95;2024.pdf |
-| TP de Investigación | TPINV&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;RES&#95;2024&#95;KRONOS.pdf |
+| Presentaciones | ISW&#95;PRES&#95;&lt;NroPres&gt;&#95;&lt;Descripcion&gt;&#95;2024.pdf |
+| Programa | ISW&#95;PROG&#95;2024.pdf |
 | Simulacros Consigna | SIM&#95;&lt;NroParcial&gt;&#95;&lt;Descripcion&gt;&#95;CON&#95;2024&#95;KRONOS.pdf |
 | Simulacros Resolución Cátedra | SIM&#95;&lt;NroParcial&gt;&#95;&lt;Descripcion&gt;&#95;RESCAT&#95;2024&#95;KRONOS.pdf |
 | Simulacros Resolución KRONOS | SIM&#95;&lt;NroParcial&gt;&#95;&lt;Descripcion&gt;&#95;RES&#95;2024&#95;KRONOS.pdf |
-| Programa | ISW&#95;PROG&#95;2024.pdf |
-| Cronograma | ISW&#95;CRON&#95;4K1&#95;2024.xslx |
-| Trabajo Práctico Programable | TPPR&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;2024&#95;KRONOS.&lt;ext&gt; |
+| TP de Investigación | TPINV&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;RES&#95;2024&#95;KRONOS.pdf |
+| TP Evaluables Editable | TPE&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;RES&#95;EDIT&#95;2024&#95;KRONOS.docx |
+| TP Evaluables Entregable | TPE&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;RES&#95;ENTR&#95;2024&#95;KRONOS.pdf |
+| TP No Evaluables Editable | TPNE&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;RES&#95;EDIT&#95;2024&#95;KRONOS.docx |
+| TP No Evaluables Entregable | TPNE&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;RES&#95;ENTR&#95;2024&#95;KRONOS.pdf|
+| TP Programable | TPPR&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;2024&#95;KRONOS.&lt;ext&gt; |
 
 
 ## Glosario
@@ -60,10 +62,12 @@
 | RESCAT | Resolución Cátedra |
 | RESP | Respuesta |
 | SIM | Simulacro |
+| TP | Trabajo Práctico |
 | TPINV | Trabajo Práctico Investigación |
 | TPNE | Trabajo practico no evaluable |
 | TPPR | Trabajo Práctico Programable |
 | TPE | Trabajo practrico evaluable |
+
 
 | Variable | Descripción |
 |--------------|------|
