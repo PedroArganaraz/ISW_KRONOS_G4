@@ -32,7 +32,7 @@
 | Tp Evaluables | TPE&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;RES&#95;EDIT&#95;2024&#95;KRONOS.docx |
 | Consigna | &lt;TipoDeTP&gt;&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;CON&#95;2024&#95;KRONOS.pdf |
 | Guía | ISW&#95;GUIA&#95;&lt;Descripcion&gt;&#95;2024.pdf |
-| Presentaciones | ISW&#95;PRES&#95;&lt;Nro&gt;&#95;&lt;Descripcion&gt;&#95;2024.pdf |
+| Presentaciones | ISW&#95;PRES&#95;&lt;NroPres&gt;&#95;&lt;Descripcion&gt;&#95;2024.pdf |
 | Bibliografía | ISW&#95;BIBLIO&#95;&lt;NombreLibro&gt;&#95;&lt;Editorial&gt;&#95;&lt;Idioma&gt;.pdf |
 | Plantillas | ISW&#95;TEMPLATE&#95;&lt;Descripcion&gt;&#95;2024.pdf |
 | TP de Investigación | TPINV&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;RES&#95;2024&#95;KRONOS.pdf |
@@ -64,3 +64,15 @@
 | TPNE | Trabajo practico no evaluable |
 | TPPR | Trabajo Práctico Programable |
 | TPE | Trabajo practrico evaluable |
+
+| Variable | Descripción |
+|--------------|------|
+| &lt;Descripción&gt; | Breve explicación de lo que trata el item |
+| &lt;Editorial&gt; | Representa el nombre de la editorial que ha publicado el libro mencionado |
+| &lt;ext&gt; | Representa el tipo de extensión del archivo |
+| &lt;Idioma&gt; | Representa el idioma en el que esta escrito el libro mencionado |
+| &lt;NombreLibro&gt; | Representa el título del libro |
+| &lt;NroParcial&gt; | Numero Natural Correspondiente al Numero de Parcial |
+| &lt;NroPres&gt; | Numero Natural Correspondiente al Numero de la Presentación |
+| &lt;NroTp&gt; | Numero Natural Correspondiente al Numero del Trabajo Práctico |
+| &lt;TipoDeTp&gt; | Representa el Tipo de Trabajo Práctico, pudiendo ser TPE o TPNE |
