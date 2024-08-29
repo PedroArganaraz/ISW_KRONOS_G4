@@ -22,7 +22,8 @@
 
 
 ## Estructura del repositorio
-![Repositorio Kronos (3)](https://github.com/user-attachments/assets/4f136e9a-5783-4694-b165-bdf47887adf8)
+![Repositorio Kronos (4)](https://github.com/user-attachments/assets/91225991-7b85-4848-a672-5f2bfca5ab24)
+
 
 
 
