@@ -22,7 +22,8 @@
 
 
 ## Estructura del repositorio
-![Repositorio Kronos (2)](https://github.com/user-attachments/assets/4187bf38-512e-4cd9-aa70-ee599707068f)
+![Repositorio Kronos (3)](https://github.com/user-attachments/assets/4f136e9a-5783-4694-b165-bdf47887adf8)
+
 
 
 
@@ -37,10 +38,10 @@
 | Plantillas | ISW&#95;TEMPLATE&#95;&lt;Descripcion&gt;&#95;2024.pdf | /practico/herramientasDeApoyo/plantillas |
 | Presentaciones | ISW&#95;PRES&#95;&lt;NroPres&gt;&#95;&lt;Descripcion&gt;&#95;2024.pdf | /teorico/presentaciones |
 | Programa | ISW&#95;PROG&#95;2024.pdf | /planificacion/programa |
-| Simulacros Consigna | SIM&#95;&lt;NroParcial&gt;&#95;&lt;Descripcion&gt;&#95;CON&#95;2024&#95;KRONOS.pdf | /practicos/simulacros |
-| Simulacros Resolución Cátedra | SIM&#95;&lt;NroParcial&gt;&#95;&lt;Descripcion&gt;&#95;RESCAT&#95;2024&#95;KRONOS.pdf | /practicos/simulacros |
-| Simulacros Resolución KRONOS | SIM&#95;&lt;NroParcial&gt;&#95;&lt;Descripcion&gt;&#95;RES&#95;2024&#95;KRONOS.pdf | /practicos/simulacros |
-| TP de Investigación | TPINV&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;RES&#95;2024&#95;KRONOS.pdf | /prácticos/trabajosDeInvestigación |
+| Simulacros Consigna | SIM&#95;&lt;NroParcial&gt;&#95;&lt;Descripcion&gt;&#95;CON&#95;2024&#95;KRONOS.pdf | /practico/simulacros |
+| Simulacros Resolución Cátedra | SIM&#95;&lt;NroParcial&gt;&#95;&lt;Descripcion&gt;&#95;RESCAT&#95;2024&#95;KRONOS.pdf | /practico/simulacros |
+| Simulacros Resolución KRONOS | SIM&#95;&lt;NroParcial&gt;&#95;&lt;Descripcion&gt;&#95;RES&#95;2024&#95;KRONOS.pdf | /practico/simulacros |
+| TP de Investigación | TPINV&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;RES&#95;2024&#95;KRONOS.pdf | /practico/trabajosDeInvestigación |
 | TP Evaluables Editable | TPE&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;RES&#95;EDIT&#95;2024&#95;KRONOS.docx | /practico/trabajoPracticos/evaluables |
 | TP Evaluables Entregable | TPE&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;RES&#95;ENTR&#95;2024&#95;KRONOS.pdf | /practico/trabajoPracticos/evaluables |
 | TP No Evaluables Editable | TPNE&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;RES&#95;EDIT&#95;2024&#95;KRONOS.docx | /practico/trabajosPracticos/noEvaluables |
