@@ -1,0 +1,9 @@
+<ion-item class="{{class}}" lines="none">
+    <ion-label class="no-select">{{label}}</ion-label>
+
+    <ion-datetime [value]="value" [disabled]="disabled" (ionChange)="onDatetimeChange($event)"
+        display-format="DD/MM/YYYY" preferWheel="true">
+        <!-- <span slot="title">{{label}}</span> -->
+
+    </ion-datetime>
+</ion-item>

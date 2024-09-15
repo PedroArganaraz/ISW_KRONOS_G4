@@ -1,0 +1,10 @@
+<ion-item class="{{class}}" lines="none">
+    <ion-select label="{{label}}" [disabled]="disabled" [value]="value" (ionChange)="onSelectChange($event)">
+        @for (option of options; track $index)
+        {
+        <ion-select-option [value]="option">
+            {{ option }}
+        </ion-select-option>
+        }
+    </ion-select>
+</ion-item>
