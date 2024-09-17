@@ -83,7 +83,6 @@ export class FormModalSelectComponent implements ControlValueAccessor, OnInit {
     }
 
     filterOptions(query: string) {
-        console.log('filtering options');
         if (query === '') {
             this.filteredOptions = this.options;
             return;

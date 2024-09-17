@@ -13,6 +13,7 @@
             <ion-col size="12">
                 <app-form-select formControlName="loadType" [options]="loadTypes" label="Tipo de Carga" />
             </ion-col>
+
             <ion-col size="12">
                 <app-form-input formControlName="retiroCalle" label="Calle" />
                 <app-form-input formControlName="retiroNumero" label="Número" />
@@ -22,31 +23,35 @@
                     selectText="Seleccione una Localidad" />
                 <app-form-input formControlName="retiroReferencia" label="Referencia" />
             </ion-col>
+
             <ion-col size="12">
                 <app-form-datetime formControlName="pickupDate" label="Fecha de Retiro" />
             </ion-col>
+
             <ion-col size="12">
                 <app-form-input formControlName="entregaCalle" label="Calle" />
                 <app-form-input formControlName="entregaNumero" label="Número" />
                 <app-form-modal-select formControlName="entregaProvincia" [options]="provincias" label="Provincia"
-                    (valueChange)="onProvinciaEntregaChange($event)" selectText="Seleccione una Provincia"/>
+                    (valueChange)="onProvinciaEntregaChange($event)" selectText="Seleccione una Provincia" />
                 <app-form-modal-select formControlName="entregaLocalidad" [options]="localidadesEntrega"
-                    label="Localidad" selectText="Seleccione una Localidad"/>
+                    label="Localidad" selectText="Seleccione una Localidad" />
                 <app-form-input formControlName="entregaReferencia" label="Referencia" />
             </ion-col>
 
             <ion-col size="12">
                 <app-form-datetime formControlName="deliveryDate" label="Fecha de Entrega" />
             </ion-col>
+
             <ion-col size="12">
                 <app-form-textarea formControlName="observation" label="Observación"></app-form-textarea>
             </ion-col>
-            <ion-col size="12">
+
+            <!-- <ion-col size="12">
                 <app-image-importer [allowCamera]="true" (imageSelected)="onImageSelected($event)" />
-            </ion-col>
+            </ion-col> -->
 
             <ion-col>
-                <app-image-slider [images]="imageList" />
+                <app-image-slider (imagesSelected)="onImagesSelected($event)" [limit]="3" />
             </ion-col>
 
             <ion-col size="12" class="align-right">

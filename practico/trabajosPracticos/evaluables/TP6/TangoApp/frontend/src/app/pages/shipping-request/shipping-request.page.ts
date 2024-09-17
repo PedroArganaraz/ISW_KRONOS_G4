@@ -11,6 +11,7 @@ import { ImageImporterComponent } from "../../components/forms/image-importer/im
 import { ImageSliderComponent } from "../../components/image-slider/image-slider.component";
 import { GeorefService, Localidad, Provincia } from 'src/app/services/georef/georef.service';
 import { FormSelectComponent } from 'src/app/components/forms/form-select/form-select.component';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-shipping-request',
@@ -26,10 +27,15 @@ export class ShippingRequestPage implements OnInit {
     imageList: Array<string | ArrayBuffer> = [];
 
     provincias: Provincia[] = [];
+
     localidadesRetiro: Localidad[] = [];
     selectedProvinciaIdRetiro: string = '';
+    subscriptionRetiro?: Subscription;
+
+
     localidadesEntrega: Localidad[] = [];
     selectedProvinciaIdEntrega: string = '';
+    subscriptionEntrega?: Subscription;
 
 
     get isFormValid(): boolean {
@@ -99,28 +105,33 @@ export class ShippingRequestPage implements OnInit {
         }
     }
 
-    onImageSelected(imageData: string | ArrayBuffer | null) {
-        this.uploadedImage = imageData;
+    // onImageSelected(imageData: string | ArrayBuffer | null) {
+    //     this.uploadedImage = imageData;
 
-        if (imageData)
-            this.imageList.push(imageData);
+    //     if (imageData)
+    //         this.imageList.push(imageData);
+    // }
+
+    onImagesSelected(imageData: Array<string | ArrayBuffer>) {
+
+        this.imageList = imageData;
     }
 
     // Obtener todas las provincias
     getProvincias(): void {
         this.georefService.getProvincias().subscribe((response: any) => {
             this.provincias = response.provincias; // Guardar provincias obtenidas
-
-            console.log("GOT PROVINCIAS: ", this.provincias);
         });
     }
 
     // Obtener localidades al seleccionar una provincia
     onProvinciaRetiroChange(provinciaId: string): void {
-        console.log('provincia changed!! ', provinciaId);
+
+        this.subscriptionRetiro?.unsubscribe();
+
         this.selectedProvinciaIdRetiro = provinciaId;
 
-        this.georefService.getLocalidadesPorProvincia(provinciaId).subscribe((response: any) => {
+        this.subscriptionRetiro = this.georefService.getLocalidadesPorProvincia(provinciaId).subscribe((response: any) => {
             this.localidadesRetiro = response.localidades; // Guardar localidades obtenidas
         });
 
@@ -133,10 +144,12 @@ export class ShippingRequestPage implements OnInit {
     }
 
     onProvinciaEntregaChange(provinciaId: string): void {
-        console.log('provincia changed!! ', provinciaId);
+
+        this.subscriptionEntrega?.unsubscribe();
+
         this.selectedProvinciaIdEntrega = provinciaId;
 
-        this.georefService.getLocalidadesPorProvincia(provinciaId).subscribe((response: any) => {
+        this.subscriptionEntrega = this.georefService.getLocalidadesPorProvincia(provinciaId).subscribe((response: any) => {
             this.localidadesEntrega = response.localidades; // Guardar localidades obtenidas
         });
 
@@ -147,4 +160,6 @@ export class ShippingRequestPage implements OnInit {
             this.requestForm.get('entregaLocalidad')?.enable();
         }
     }
+
+    // onImageSelected()
 }

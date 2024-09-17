@@ -13,6 +13,14 @@
 </swiper-container> -->
 
 <ion-row>
+    @if (canAddImages)
+    {
+    <ion-card class='image-card clickable-card' (click)="selectImage()">
+        <ion-card-content>
+            <ion-icon name="add" class="center-icon"></ion-icon>
+        </ion-card-content>
+    </ion-card>
+    }
     @for (image of images; track $index)
     {
     <ion-card class='image-card'>
@@ -20,3 +28,5 @@
     </ion-card>
     }
 </ion-row>
+
+<input type="file" accept="image/*" #fileInput hidden (change)="onFileSelected($event)" />
