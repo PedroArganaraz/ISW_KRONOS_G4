@@ -2,6 +2,11 @@ import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IonItem, IonLabel, IonSelect, IonSelectOption } from "@ionic/angular/standalone";
 
+export interface FormOption {
+    nombre: string;
+    id: string;
+}
+
 @Component({
     selector: 'app-form-select',
     templateUrl: './form-select.component.html',
@@ -17,7 +22,7 @@ import { IonItem, IonLabel, IonSelect, IonSelectOption } from "@ionic/angular/st
     ]
 })
 export class FormSelectComponent implements ControlValueAccessor {
-    @Input() options: any[] = [];
+    @Input() options: FormOption[] = [];
     @Input() label: string = '';
     @Input() class: string = '';
 

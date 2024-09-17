@@ -3,7 +3,7 @@
         <ion-buttons slot="start">
             <ion-menu-button></ion-menu-button>
         </ion-buttons>
-        <ion-title>Shipping Request</ion-title>
+        <ion-title>Pedido de Envío</ion-title>
     </ion-toolbar>
 </ion-header>
 
@@ -11,22 +11,35 @@
     <form [formGroup]="requestForm" (ngSubmit)="onSubmit()">
         <ion-row>
             <ion-col size="12">
-                <app-form-select formControlName="loadType" [options]="loadTypes" label="Load Type" />
+                <app-form-select formControlName="loadType" [options]="loadTypes" label="Tipo de Carga" />
             </ion-col>
             <ion-col size="12">
-                <app-form-input formControlName="pickupAddress" label="Pickup Address" />
+                <app-form-input formControlName="retiroCalle" label="Calle" />
+                <app-form-input formControlName="retiroNumero" label="Número" />
+                <app-form-modal-select formControlName="retiroProvincia" [options]="provincias" label="Provincia"
+                    (valueChange)="onProvinciaRetiroChange($event)" selectText="Seleccione una Provincia" />
+                <app-form-modal-select formControlName="retiroLocalidad" [options]="localidadesRetiro" label="Localidad"
+                    selectText="Seleccione una Localidad" />
+                <app-form-input formControlName="retiroReferencia" label="Referencia" />
             </ion-col>
             <ion-col size="12">
-                <app-form-datetime formControlName="pickupDate" label="Pickup Date" />
+                <app-form-datetime formControlName="pickupDate" label="Fecha de Retiro" />
             </ion-col>
             <ion-col size="12">
-                <app-form-input formControlName="deliveryAddress" label="Delivery Address" />
+                <app-form-input formControlName="entregaCalle" label="Calle" />
+                <app-form-input formControlName="entregaNumero" label="Número" />
+                <app-form-modal-select formControlName="entregaProvincia" [options]="provincias" label="Provincia"
+                    (valueChange)="onProvinciaEntregaChange($event)" selectText="Seleccione una Provincia"/>
+                <app-form-modal-select formControlName="entregaLocalidad" [options]="localidadesEntrega"
+                    label="Localidad" selectText="Seleccione una Localidad"/>
+                <app-form-input formControlName="entregaReferencia" label="Referencia" />
+            </ion-col>
+
+            <ion-col size="12">
+                <app-form-datetime formControlName="deliveryDate" label="Fecha de Entrega" />
             </ion-col>
             <ion-col size="12">
-                <app-form-datetime formControlName="deliveryDate" label="Delivery Date" />
-            </ion-col>
-            <ion-col size="12">
-                <app-form-textarea formControlName="observation" label="Observation"></app-form-textarea>
+                <app-form-textarea formControlName="observation" label="Observación"></app-form-textarea>
             </ion-col>
             <ion-col size="12">
                 <app-image-importer [allowCamera]="true" (imageSelected)="onImageSelected($event)" />
@@ -37,7 +50,7 @@
             </ion-col>
 
             <ion-col size="12" class="align-right">
-                <ion-button type="submit" [disabled]="!isFormValid">Submit</ion-button>
+                <ion-button type="submit" [disabled]="!isFormValid">Enviar</ion-button>
             </ion-col>
         </ion-row>
     </form>
