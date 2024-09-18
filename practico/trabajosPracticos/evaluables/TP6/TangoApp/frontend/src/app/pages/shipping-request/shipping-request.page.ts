@@ -2,7 +2,7 @@ import { TipoDeCargaService } from './../../services/tipo-de-carga/tipo-de-carga
 import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonText, IonButton, IonSelectOption, IonRow, IonCol, IonList, IonButtons, IonMenuButton } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonText, IonButton, IonSelectOption, IonRow, IonCol, IonList, IonButtons, IonMenuButton, ModalController } from '@ionic/angular/standalone';
 import { ELoadType } from 'src/app/ts/enums/load-type';
 import { FormModalSelectComponent } from "../../components/forms/form-modal-select/form-modal-select.component";
 import { FormInputComponent } from "../../components/forms/form-input/form-input.component";
@@ -19,6 +19,8 @@ import { TipoCarga } from 'src/app/ts/classes/models/tipoCarga';
 import { ShippingRequestService } from 'src/app/services/shipping-request/shipping-request.service';
 import { Domicilio } from 'src/app/ts/classes/models/domicilio';
 import { PedidoEnvio } from 'src/app/ts/classes/models/pedidoEnvio';
+import { ErrorModalComponent } from 'src/app/components/modal/error-modal/error-modal.component';
+import { SuccessModalComponent } from 'src/app/components/modal/success-modal/success-modal.component';
 
 @Component({
     selector: 'app-shipping-request',
@@ -70,7 +72,12 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
     //     }));
     // }
 
-    constructor(private georefService: GeorefService, private tipoDeCargaService: TipoDeCargaService, private pedidoEnvioService: ShippingRequestService) {
+    constructor(
+        private georefService: GeorefService, 
+        private tipoDeCargaService: TipoDeCargaService, 
+        private pedidoEnvioService: ShippingRequestService,
+        private modalController: ModalController,
+    ) {
 
     }
 
@@ -124,56 +131,68 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
         return deliveryDate >= pickupDate ? null : { dateInvalid: true };
     }
 
-    onSubmit() {
+    async onSubmit() {
         this.requestForm.markAllAsTouched();
-
+    
         if (this.requestForm.invalid) {
-            console.log("Form is invalid");
+          const errorModal = await this.modalController.create({
+            component: ErrorModalComponent,
+            componentProps: {
+              message: 'Please correct the errors in the form.'
+            }
+          });
+          await errorModal.present();
         } else {
-            const formValue = this.requestForm.value;
-            console.log("Form data:", formValue);
-
-            const domicilioRetiro = new Domicilio(
-                formValue.retiroCalle,
-                formValue.retiroNumero,
-                formValue.retiroLocalidad,
-                formValue.retiroProvincia,
-                formValue.retiroReferencia
-            );
-
-            const domicilioEntrega = new Domicilio(
-                formValue.entregaCalle,
-                formValue.entregaNumero,
-                formValue.entregaLocalidad,
-                formValue.entregaProvincia,
-                formValue.entregaReferencia
-            );
-
-            const tipoCarga = new TipoCarga(formValue.loadType);
-
-            const pedidoEnvio = new PedidoEnvio(
-                new Date(formValue.pickupDate),
-                new Date(formValue.deliveryDate),
-                formValue.image,
-                formValue.observation,
-                domicilioEntrega,
-                domicilioRetiro,
-                tipoCarga
-            );
-
-            this.pedidoEnvioService.create(pedidoEnvio).subscribe({
-                next: (response) => {
-                    console.log("Pedido created successfully:", response);
-                },
-                error: (error) => {
-                    console.log("Error creating pedido:", error);
-                },
-                complete: () => {
-                    console.log("Request completed.");
-                }
+          const formValue = this.requestForm.value;
+    
+          const domicilioRetiro = new Domicilio(
+            formValue.retiroCalle,
+            formValue.retiroNumero,
+            formValue.retiroLocalidad,
+            formValue.retiroProvincia,
+            formValue.retiroReferencia
+          );
+    
+          const domicilioEntrega = new Domicilio(
+            formValue.entregaCalle,
+            formValue.entregaNumero,
+            formValue.entregaLocalidad,
+            formValue.entregaProvincia,
+            formValue.entregaReferencia
+          );
+    
+          const tipoCarga = new TipoCarga(formValue.loadType);
+    
+          const pedidoEnvio = new PedidoEnvio(
+            new Date(formValue.pickupDate),
+            new Date(formValue.deliveryDate),
+            formValue.image,
+            formValue.observation,
+            domicilioEntrega,
+            domicilioRetiro,
+            tipoCarga
+          );
+    
+          try {
+            await this.pedidoEnvioService.create(pedidoEnvio).toPromise();
+            const successModal = await this.modalController.create({
+              component: SuccessModalComponent,
+              componentProps: {
+                message: 'Pedido creado con exito.'
+              }
             });
+            await successModal.present();
+          } catch (error) {
+            const errorModal = await this.modalController.create({
+              component: ErrorModalComponent,
+              componentProps: {
+                message: 'No se pudo crear el pedido. Intentelo mas tarde.'
+              }
+            });
+            await errorModal.present();
+          }
         }
-    }
+      }
 
 
     onImagesSelected(imageData: Array<string | ArrayBuffer>) {
@@ -298,22 +317,4 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
         console.log('current slides ', fieldsToValidate)
         return fieldsToValidate.every(control => this.requestForm.get(control)?.valid);
     }
-
-    // validateCurrentSlide(activeIndex: number) {
-
-    //     switch (activeIndex) {
-    //         case 0:
-    //             this.currentSlideFields = ['loadType', 'retiroCalle', 'retiroNumero', 'retiroProvincia', 'retiroLocalidad', 'pickupDate'];
-    //             break;
-    //         case 1:
-    //             this.currentSlideFields = ['entregaCalle', 'entregaNumero', 'entregaProvincia', 'entregaLocalidad', 'deliveryDate'];
-    //             break;
-    //         case 2:
-    //             this.currentSlideFields = ['observation'];
-    //             break;
-    //         default:
-    //             this.currentSlideFields = [];
-    //     }
-
-    // }
 }

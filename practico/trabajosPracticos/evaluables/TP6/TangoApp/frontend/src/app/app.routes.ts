@@ -14,4 +14,8 @@ export const routes: Routes = [
         path: 'shipping-request',
         loadComponent: () => import('./pages/shipping-request/shipping-request.page').then(m => m.ShippingRequestPage)
     },
+    {
+        path: 'connectivity',
+        loadComponent: () => import('./pages/connectivity/connectivity.page').then(m => m.ConnectivityPage)
+    },
 ];

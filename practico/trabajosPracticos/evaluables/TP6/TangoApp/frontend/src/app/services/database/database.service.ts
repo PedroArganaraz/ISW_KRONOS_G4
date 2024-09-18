@@ -3,17 +3,17 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Doc } from 'src/app/ts/interfaces/database-docs/doc';
 
-const ROOT_URL = 'http://localhost:8080';
 
 @Injectable({
     providedIn: 'root'
 })
 export class DatabaseService {
+    ip = 'http://localhost:8080';
 
     constructor(private http: HttpClient) { }
 
     public getAll<T extends Doc>(itemKey: string): Observable<Array<T>> {
-        const url = ROOT_URL + '/' + itemKey;
+        const url = this.ip + '/' + itemKey;
 
         return this.http.get<Array<T>>(url);
 
@@ -36,9 +36,13 @@ export class DatabaseService {
 
     public create<T extends Doc>(doc: T, itemKey: string): Observable<T> {
         console.log('doc to create ', doc);
-        const url = ROOT_URL + '/' + itemKey;
+        const url = this.ip + '/' + itemKey;
 
         return this.http.post<T>(url, doc);
+    }
+
+    public setIP(newIp: string) {
+        this.ip = newIp;
     }
 }
 
