@@ -8,7 +8,7 @@ import { TipoCarga } from "./tipoCarga";
 export class PedidoEnvio implements DBStorable<PedidoEnvioDoc> {
     private _fechaRetiro: Date;
     private _fechaEntrega: Date;
-    private _imagen: string;
+    private _imagenes: Array<string>;
     private _observaciones: string;
     private _domicilioEntrega: Domicilio;
     private _domicilioRetiro: Domicilio;
@@ -17,7 +17,7 @@ export class PedidoEnvio implements DBStorable<PedidoEnvioDoc> {
     constructor(
         fechaRetiro: Date,
         fechaEntrega: Date,
-        imagen: string,
+        imagenes: Array<string>,
         observaciones: string,
         domicilioEntrega: Domicilio,
         domicilioRetiro: Domicilio,
@@ -25,7 +25,7 @@ export class PedidoEnvio implements DBStorable<PedidoEnvioDoc> {
     ) {
         this._fechaRetiro = fechaRetiro;
         this._fechaEntrega = fechaEntrega;
-        this._imagen = imagen;
+        this._imagenes = imagenes;
         this._observaciones = observaciones;
         this._domicilioEntrega = domicilioEntrega;
         this._domicilioRetiro = domicilioRetiro;
@@ -37,11 +37,11 @@ export class PedidoEnvio implements DBStorable<PedidoEnvioDoc> {
             id: '',
             fechaRetiro: this._fechaRetiro.toISOString(),
             fechaEntrega: this._fechaEntrega.toISOString(),
-            imagen: this._imagen,
+            imagenes: this._imagenes,
             observaciones: this._observaciones,
             domicilioEntrega: this._domicilioEntrega.toDoc(), // Assuming Domicilio implements toDoc
             domicilioRetiro: this._domicilioRetiro.toDoc(),   // Assuming Domicilio implements toDoc
-            tipoCarga: this._tipoCarga.toDoc()                // Assuming TipoCarga implements toDoc
+            tipoDeCarga: this._tipoCarga.toDoc()                // Assuming TipoCarga implements toDoc
         };
     }
 
@@ -49,11 +49,11 @@ export class PedidoEnvio implements DBStorable<PedidoEnvioDoc> {
         return new PedidoEnvio(
             new Date(doc.fechaRetiro),
             new Date(doc.fechaEntrega),
-            doc.imagen,
+            doc.imagenes,
             doc.observaciones,
             Domicilio.fromDoc(doc.domicilioEntrega),  // Assuming Domicilio also implements DBStorable
             Domicilio.fromDoc(doc.domicilioRetiro),   // Assuming Domicilio also implements DBStorable
-            TipoCarga.fromDoc(doc.tipoCarga)          // Assuming TipoCarga also implements DBStorable
+            TipoCarga.fromDoc(doc.tipoDeCarga)          // Assuming TipoCarga also implements DBStorable
         );
     }
 
@@ -74,12 +74,12 @@ export class PedidoEnvio implements DBStorable<PedidoEnvioDoc> {
         this._fechaEntrega = value;
     }
 
-    get imagen(): string {
-        return this._imagen;
+    get imagenes(): Array<string> {
+        return this._imagenes;
     }
 
-    set imagen(value: string) {
-        this._imagen = value;
+    set imagenes(value: Array<string>) {
+        this._imagenes = value;
     }
 
     get observaciones(): string {

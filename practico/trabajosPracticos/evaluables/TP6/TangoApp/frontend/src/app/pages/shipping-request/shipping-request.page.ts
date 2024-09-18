@@ -1,3 +1,4 @@
+import { TipoDeCargaService } from './../../services/tipo-de-carga/tipo-de-carga.service';
 import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
@@ -14,6 +15,10 @@ import { FormSelectComponent } from 'src/app/components/forms/form-select/form-s
 import { Subscription } from 'rxjs';
 import { Swiper } from 'swiper';
 import { FormInputNumberComponent } from "../../components/forms/form-input-number/form-input-number.component";
+import { TipoCarga } from 'src/app/ts/classes/models/tipoCarga';
+import { ShippingRequestService } from 'src/app/services/shipping-request/shipping-request.service';
+import { Domicilio } from 'src/app/ts/classes/models/domicilio';
+import { PedidoEnvio } from 'src/app/ts/classes/models/pedidoEnvio';
 
 @Component({
     selector: 'app-shipping-request',
@@ -33,6 +38,7 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
     imageList: Array<string | ArrayBuffer> = [];
 
     provincias: Provincia[] = [];
+    loadTypes: TipoCarga[] = [];
 
     localidadesRetiro: Localidad[] = [];
     selectedProvinciaIdRetiro: string = '';
@@ -55,26 +61,29 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
 
 
 
-    get loadTypes() {
-        // return Object.values(ELoadType);
+    // get loadTypes() {
+    //     // return Object.values(ELoadType);
 
-        return Object.keys(ELoadType).map((key) => ({
-            nombre: key,
-            id: ELoadType[key as keyof typeof ELoadType]
-        }));
+    //     return Object.keys(ELoadType).map((key) => ({
+    //         nombre: key,
+    //         id: ELoadType[key as keyof typeof ELoadType]
+    //     }));
+    // }
+
+    constructor(private georefService: GeorefService, private tipoDeCargaService: TipoDeCargaService, private pedidoEnvioService: ShippingRequestService) {
+
     }
-
-    constructor(private georefService: GeorefService) { }
 
     ngOnInit() {
         this.getProvincias();
+        this.getTiposDeCarga();
 
         this.requestForm = new FormGroup({
             // tipo de carga que debe ser transportado
-            loadType: new FormControl(ELoadType.Package, Validators.required),
+            loadType: new FormControl(ELoadType.Paquete, Validators.required),
 
             // dirección de retiro
-            retiroCalle: new FormControl("", [Validators.required, Validators.minLength(3)]),
+            retiroCalle: new FormControl("", [Validators.required]),
             retiroNumero: new FormControl<number | null>(null, [Validators.required, Validators.min(1)]),
             retiroLocalidad: new FormControl({ value: "", disabled: true }, [Validators.required]),
             retiroProvincia: new FormControl("", [Validators.required]),
@@ -84,7 +93,7 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
             pickupDate: new FormControl<Date | null>(null, [Validators.required, Validators.min(1)]),
 
             // dirección de entrega
-            entregaCalle: new FormControl("", [Validators.required, Validators.minLength(3)]),
+            entregaCalle: new FormControl("", [Validators.required]),
             entregaNumero: new FormControl<number | null>(null, [Validators.required, Validators.min(1)]),
             entregaLocalidad: new FormControl({ value: "", disabled: true }, [Validators.required]),
             entregaProvincia: new FormControl("", [Validators.required]),
@@ -121,16 +130,51 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
         if (this.requestForm.invalid) {
             console.log("Form is invalid");
         } else {
-            console.log("Form data:", this.requestForm.value);
+            const formValue = this.requestForm.value;
+            console.log("Form data:", formValue);
+
+            const domicilioRetiro = new Domicilio(
+                formValue.retiroCalle,
+                formValue.retiroNumero,
+                formValue.retiroLocalidad,
+                formValue.retiroProvincia,
+                formValue.retiroReferencia
+            );
+
+            const domicilioEntrega = new Domicilio(
+                formValue.entregaCalle,
+                formValue.entregaNumero,
+                formValue.entregaLocalidad,
+                formValue.entregaProvincia,
+                formValue.entregaReferencia
+            );
+
+            const tipoCarga = new TipoCarga(formValue.loadType);
+
+            const pedidoEnvio = new PedidoEnvio(
+                new Date(formValue.pickupDate),
+                new Date(formValue.deliveryDate),
+                formValue.image,
+                formValue.observation,
+                domicilioEntrega,
+                domicilioRetiro,
+                tipoCarga
+            );
+
+            this.pedidoEnvioService.create(pedidoEnvio).subscribe({
+                next: (response) => {
+                    console.log("Pedido created successfully:", response);
+                },
+                error: (error) => {
+                    console.log("Error creating pedido:", error);
+                },
+                complete: () => {
+                    console.log("Request completed.");
+                }
+            });
         }
     }
 
-    // onImageSelected(imageData: string | ArrayBuffer | null) {
-    //     this.uploadedImage = imageData;
-
-    //     if (imageData)
-    //         this.imageList.push(imageData);
-    // }
 
     onImagesSelected(imageData: Array<string | ArrayBuffer>) {
 
@@ -141,6 +185,15 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
     getProvincias(): void {
         this.georefService.getProvincias().subscribe((response: any) => {
             this.provincias = response.provincias; // Guardar provincias obtenidas
+        });
+    }
+
+    getTiposDeCarga(): void {
+        this.tipoDeCargaService.getAll().subscribe((response: any) => {
+            console.log("tipos de carga: ", response);
+            // this.loadTypes = response.
+            this.loadTypes = response;
+
         });
     }
 

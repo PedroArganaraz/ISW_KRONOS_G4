@@ -5,14 +5,18 @@ import { DBStorable, DBStorableStatic } from "../../interfaces/dbStorable";
 
 @staticImplements<DBStorableStatic<TipoCargaDoc, TipoCarga>>()
 export class TipoCarga implements DBStorable<TipoCargaDoc> {
-    private _tipo: ELoadType;
+    private _tipo: string;
+    private _id: string;
 
-    constructor(tipo: ELoadType) {
+    constructor(tipo: string) {
         this._tipo = tipo;
+        this._id = tipo;
     }
 
     static fromDoc(doc: TipoCargaDoc): TipoCarga {
-        return new TipoCarga(ELoadType[doc.descripcion as keyof typeof ELoadType]);
+        // return new TipoCarga(ELoadType[doc.descripcion as keyof typeof ELoadType]);
+        return new TipoCarga(doc.descripcion);
+
     }
 
     toDoc(): TipoCargaDoc {
@@ -23,11 +27,23 @@ export class TipoCarga implements DBStorable<TipoCargaDoc> {
     }
 
     // Getter and Setter
-    get tipo(): ELoadType {
+    get tipo(): string {
         return this._tipo;
     }
 
-    set tipo(value: ELoadType) {
+    set tipo(value: string) {
         this._tipo = value;
+    }
+
+    get id(): string {
+        return this._id;
+    }
+
+    set id(value: string) {
+        this._id = value;
+    }
+
+    get nombre() {
+        return this._tipo;
     }
 }

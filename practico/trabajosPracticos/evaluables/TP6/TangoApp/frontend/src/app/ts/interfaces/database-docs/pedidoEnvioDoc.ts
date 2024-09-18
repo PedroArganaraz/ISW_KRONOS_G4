@@ -6,10 +6,10 @@ import { TipoCargaDoc } from "./tipoCargaDoc";
 export interface PedidoEnvioDoc extends Doc {
     fechaRetiro: string;
     fechaEntrega: string;
-    imagen: string;
+    imagenes: Array<string>;
     observaciones: string;
     domicilioEntrega: DomicilioDoc;
     domicilioRetiro: DomicilioDoc;
-    tipoCarga: TipoCargaDoc;
+    tipoDeCarga: TipoCargaDoc;
 }
 
