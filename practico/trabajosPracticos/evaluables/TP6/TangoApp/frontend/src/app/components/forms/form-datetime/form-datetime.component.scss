@@ -1,14 +1,14 @@
-ion-datetime {
-    --background: rgb(30, 30, 30);
-    --background-rgb: 30, 30, 30;
-    --wheel-highlight-background: rgb(255, 255, 255);
-    --wheel-highlight-border-radius: 48px;
-    --wheel-fade-background-rgb: 30, 30, 30;
-}
+// ion-datetime {
+//     --background: rgb(30, 30, 30);
+//     --background-rgb: 30, 30, 30;
+//     --wheel-highlight-background: rgb(255, 255, 255);
+//     --wheel-highlight-border-radius: 48px;
+//     --wheel-fade-background-rgb: 30, 30, 30;
+// }
 
-ion-datetime::part(wheel-item) {
-    color: rgb(93, 139, 247);
-}
+// ion-datetime::part(wheel-item) {
+//     color: rgb(93, 139, 247);
+// }
 
 // ion-datetime::part(wheel-item active) {
 //     color: rgb(128, 30, 171);

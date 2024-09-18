@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonText, IonButton, IonSelectOption, IonRow, IonCol, IonList, IonButtons, IonMenuButton } from '@ionic/angular/standalone';
@@ -12,15 +12,21 @@ import { ImageSliderComponent } from "../../components/image-slider/image-slider
 import { GeorefService, Localidad, Provincia } from 'src/app/services/georef/georef.service';
 import { FormSelectComponent } from 'src/app/components/forms/form-select/form-select.component';
 import { Subscription } from 'rxjs';
+import { Swiper } from 'swiper';
+import { FormInputNumberComponent } from "../../components/forms/form-input-number/form-input-number.component";
 
 @Component({
     selector: 'app-shipping-request',
     templateUrl: './shipping-request.page.html',
     styleUrls: ['./shipping-request.page.scss'],
     standalone: true,
-    imports: [IonButtons, IonList, IonCol, IonRow, ReactiveFormsModule, IonButton, IonText, IonLabel, IonItem, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonSelectOption, FormModalSelectComponent, FormSelectComponent, FormInputComponent, FormDatetimeComponent, FormTextareaComponent, IonMenuButton, ImageImporterComponent, ImageSliderComponent]
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    imports: [IonButtons, IonList, IonCol, IonRow, ReactiveFormsModule, IonButton, IonText, IonLabel, IonItem, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonSelectOption, FormModalSelectComponent, FormSelectComponent, FormInputComponent, FormDatetimeComponent, FormTextareaComponent, IonMenuButton, ImageImporterComponent, ImageSliderComponent, FormInputNumberComponent]
 })
-export class ShippingRequestPage implements OnInit {
+export class ShippingRequestPage implements OnInit, AfterViewInit {
+    @ViewChild('swiper', { static: false }) swiperRef?: ElementRef;
+    swiper?: Swiper;
+
     requestForm!: FormGroup;
     uploadedImage: string | ArrayBuffer | null = null;
 
@@ -37,10 +43,17 @@ export class ShippingRequestPage implements OnInit {
     selectedProvinciaIdEntrega: string = '';
     subscriptionEntrega?: Subscription;
 
+    // canSlideNext: boolean = false;
+    currentSlideFields: Array<string> = [];
+
+    activeIndex: number = 0;
+    lastIndex: number = 2;
 
     get isFormValid(): boolean {
-        return this.requestForm.valid;
+        return !this.requestForm.invalid;
     }
+
+
 
     get loadTypes() {
         // return Object.values(ELoadType);
@@ -62,23 +75,23 @@ export class ShippingRequestPage implements OnInit {
 
             // dirección de retiro
             retiroCalle: new FormControl("", [Validators.required, Validators.minLength(3)]),
-            retiroNumero: new FormControl("", [Validators.required, Validators.minLength(1)]),
-            retiroLocalidad: new FormControl({ value: "", disabled: true }, [Validators.required, Validators.minLength(3)]),
-            retiroProvincia: new FormControl("", [Validators.required, Validators.minLength(3)]),
+            retiroNumero: new FormControl<number | null>(null, [Validators.required, Validators.min(1)]),
+            retiroLocalidad: new FormControl({ value: "", disabled: true }, [Validators.required]),
+            retiroProvincia: new FormControl("", [Validators.required]),
             retiroReferencia: new FormControl(""),
 
             // la fecha de retiro
-            pickupDate: new FormControl(new Date(), Validators.required),
+            pickupDate: new FormControl<Date | null>(null, [Validators.required, Validators.min(1)]),
 
             // dirección de entrega
             entregaCalle: new FormControl("", [Validators.required, Validators.minLength(3)]),
-            entregaNumero: new FormControl("", [Validators.required, Validators.minLength(1)]),
-            entregaLocalidad: new FormControl({ value: "", disabled: true }, [Validators.required, Validators.minLength(3)]),
-            entregaProvincia: new FormControl("", [Validators.required, Validators.minLength(3)]),
+            entregaNumero: new FormControl<number | null>(null, [Validators.required, Validators.min(1)]),
+            entregaLocalidad: new FormControl({ value: "", disabled: true }, [Validators.required]),
+            entregaProvincia: new FormControl("", [Validators.required]),
             entregaReferencia: new FormControl(""),
 
             // la fecha de entrega
-            deliveryDate: new FormControl(new Date(), Validators.required),
+            deliveryDate: new FormControl<Date | null>(null, [Validators.required, Validators.min(1)]),
 
             // observación (opcional)
             observation: new FormControl(""),
@@ -89,6 +102,11 @@ export class ShippingRequestPage implements OnInit {
 
     }
 
+    ngAfterViewInit(): void {
+        this.onSwiperReady();
+    }
+
+
     dateValidator(control: AbstractControl): ValidationErrors | null {
         const formGroup = control as FormGroup;
         const pickupDate = formGroup.get('pickupDate')?.value;
@@ -98,10 +116,12 @@ export class ShippingRequestPage implements OnInit {
     }
 
     onSubmit() {
-        if (this.isFormValid) {
-            console.log("Form data:", this.requestForm.value);
-        } else {
+        this.requestForm.markAllAsTouched();
+
+        if (this.requestForm.invalid) {
             console.log("Form is invalid");
+        } else {
+            console.log("Form data:", this.requestForm.value);
         }
     }
 
@@ -161,5 +181,86 @@ export class ShippingRequestPage implements OnInit {
         }
     }
 
-    // onImageSelected()
+    onSwiperReady() {
+        this.swiper = this.swiperRef?.nativeElement.swiper;
+
+        console.log('swiper ready? ', this.swiper)
+
+        this.swiper?.on('slideChange', this.onSlideChange.bind(this));
+        if (this.swiper) this.swiper.allowTouchMove = false;
+
+        this.onSlideChange();
+    }
+
+    onSlideChange(swiper?: Swiper) {
+        // Get the active index and validate current slide's form controls
+        this.activeIndex = (swiper ? swiper.activeIndex : this.swiper?.activeIndex) ?? 0;
+
+        console.log('slide change ', this.activeIndex);
+        // if (activeIndex)
+        //     this.validateCurrentSlide(activeIndex);
+
+
+    }
+
+    swipeNext() {
+        if (this.canSlideNext()) {
+            this.swiper?.slideNext();
+
+            Object.keys(this.requestForm.controls).forEach(control => {
+                this.requestForm.get(control)?.markAsUntouched();
+            });
+        }
+        else {
+            this.requestForm.markAllAsTouched();
+            // this.requestForm.updateValueAndValidity();
+            // this.requestForm.markAllAsTouched();
+        }
+
+    }
+
+    swipePrev() {
+        this.swiper?.slidePrev();
+
+    }
+
+    canSlideNext(): boolean {
+
+        let fieldsToValidate: Array<string> = []
+
+        switch (this.activeIndex) {
+            case 0:
+                fieldsToValidate = ['loadType', 'retiroCalle', 'retiroNumero', 'retiroProvincia', 'retiroLocalidad', 'pickupDate'];
+                break;
+            case 1:
+                fieldsToValidate = ['entregaCalle', 'entregaNumero', 'entregaProvincia', 'entregaLocalidad', 'deliveryDate'];
+                break;
+            case 2:
+                fieldsToValidate = ['observation'];
+                break;
+            default:
+                fieldsToValidate = [];
+        }
+
+        console.log('current slides ', fieldsToValidate)
+        return fieldsToValidate.every(control => this.requestForm.get(control)?.valid);
+    }
+
+    // validateCurrentSlide(activeIndex: number) {
+
+    //     switch (activeIndex) {
+    //         case 0:
+    //             this.currentSlideFields = ['loadType', 'retiroCalle', 'retiroNumero', 'retiroProvincia', 'retiroLocalidad', 'pickupDate'];
+    //             break;
+    //         case 1:
+    //             this.currentSlideFields = ['entregaCalle', 'entregaNumero', 'entregaProvincia', 'entregaLocalidad', 'deliveryDate'];
+    //             break;
+    //         case 2:
+    //             this.currentSlideFields = ['observation'];
+    //             break;
+    //         default:
+    //             this.currentSlideFields = [];
+    //     }
+
+    // }
 }

@@ -21,10 +21,11 @@
         </ion-card-content>
     </ion-card>
     }
-    @for (image of images; track $index)
+    @for (image of images; track $index; let i = $index)
     {
     <ion-card class='image-card'>
         <ion-img [src]="image" alt="Image slide" />
+        <ion-icon name="close-circle" class="remove-icon" (click)="removeImage(i)" />
     </ion-card>
     }
 </ion-row>

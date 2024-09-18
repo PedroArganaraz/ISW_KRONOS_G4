@@ -1,16 +1,37 @@
 <ion-app>
     <ion-split-pane contentId="main-content">
         <ion-menu contentId="main-content" type="overlay">
-            <ion-content>
-                <ion-list id="inbox-list">
+            <!-- <ion-header>
+                <ion-row class="header-content">
+                    <app-avatar-photo [name]="(authService.userName$ | async) ?? undefined" />
+                    <ion-col class="center-items">
+                        <label>
+                            {{user.name}}
+                        </label>
+                        <br>
+                        <ion-note>
+                            {{user.mail}}
+                        </ion-note>
+                    </ion-col>
+                </ion-row>
+            </ion-header> -->
+            <ion-header >
+                <ion-list >
+                    <ion-list-header class="no-select">{{user.name}}</ion-list-header>
+                    <ion-note class="ion-no-margin">{{user.mail}}</ion-note>
+                </ion-list>
+            </ion-header>
+            <ion-content style="background-color: var(--ion-color-primary);">
+                <!-- <ion-list>
                     <ion-list-header class="no-select">{{user.name}}</ion-list-header>
                     <ion-note class="no-select">{{user.mail}}</ion-note>
-
+                </ion-list> -->
+                <ion-list id="inbox-list">
                     @for (page of appPages; track $index)
                     {
                     <ion-menu-toggle auto-hide="false">
                         <ion-item routerDirection="root" [routerLink]="[page.url]" lines="none" detail="false"
-                            routerLinkActive="selected">
+                            routerLinkActive="selected" color="light">
                             <ion-icon aria-hidden="true" slot="start" [name]="page.icon"></ion-icon>
                             <ion-label>{{ page.title }}</ion-label>
                         </ion-item>

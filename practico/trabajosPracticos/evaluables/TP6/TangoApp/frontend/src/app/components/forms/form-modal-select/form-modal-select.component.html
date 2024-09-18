@@ -1,15 +1,3 @@
-<!-- <ion-item class="{{class}}" lines="none">
-    <ion-select label="{{label}}" [disabled]="disabled" [value]="value" (ionChange)="onSelectChange($event)">
-        @for (option of options; track option.id)
-        {
-        <ion-select-option [value]="option.id">
-            {{ option.nombre }}
-        </ion-select-option>
-        }
-    </ion-select>
-</ion-item>
- -->
-
 <ion-item class="{{class}}" lines="none" (click)="openModal()" [disabled]="disabled">
     <ion-label>{{label}}</ion-label>
     <div slot="end">{{currentOptionName}}</div>
@@ -32,7 +20,7 @@
             <ion-list>
                 @for (option of filteredOptions; track option.id)
                 {
-                <ion-item (click)="selectOption(option)">
+                <ion-item (click)="selectOption(option)" color="light">
                     {{ option.nombre }}
                 </ion-item>
 

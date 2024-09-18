@@ -34,6 +34,40 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+// @import '@ionic/angular/css/palettes/dark.system.css';
+
 
 @import "~swiper/swiper-bundle.css";
+
+ion-item {
+    --background: var(--ion-color-medium); /* Set background color */
+    /* Optional: Custom text color */
+    // --color: var(--custom-item-text-color);
+
+    /* Add shadow effect */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+    border-radius: 8px; /* Optional: Add rounded corners */
+    transition: box-shadow 0.3s ease-in-out; /* Smooth shadow transition */
+}
+
+
+ion-datetime {
+    --background: var(--ion-color-medium);
+    // --background-rgb: 30, 30, 30;
+    // --wheel-highlight-background: rgb(255, 255, 255);
+    // --wheel-highlight-border-radius: 48px;
+    // --wheel-fade-background-rgb: 30, 30, 30;
+}
+
+ion-button {
+    --background: var(--ion-color-secondary);
+}
+
+// ion-content {
+//     --background: var(--ion-color-medium);
+// }
+
+ion-toolbar {
+    --background: var(--ion-color-primary);
+    --color: var(--ion-color-primary-contrast);
+}

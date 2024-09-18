@@ -1,7 +1,7 @@
 import { Component, Input, AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ViewChild, Output, EventEmitter, ElementRef } from '@angular/core';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { addIcons } from 'ionicons';
-import { add } from 'ionicons/icons';
+import { add, closeCircle } from 'ionicons/icons';
 import Swiper from 'swiper';
 // import 'swiper/swiper-bundle.min.css';
 
@@ -30,7 +30,7 @@ export class ImageSliderComponent implements AfterViewInit {
     }
 
     constructor() {
-        addIcons({ add })
+        addIcons({ add, closeCircle })
     }
 
     ngAfterViewInit() {
@@ -97,5 +97,8 @@ export class ImageSliderComponent implements AfterViewInit {
     }
 
 
-
+    removeImage(index: number) {
+        this.images.splice(index, 1);
+        this.imagesSelected.emit(this.images);
+    }
 }
