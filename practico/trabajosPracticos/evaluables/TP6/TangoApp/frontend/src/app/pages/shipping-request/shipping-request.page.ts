@@ -73,8 +73,8 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
     // }
 
     constructor(
-        private georefService: GeorefService, 
-        private tipoDeCargaService: TipoDeCargaService, 
+        private georefService: GeorefService,
+        private tipoDeCargaService: TipoDeCargaService,
         private pedidoEnvioService: ShippingRequestService,
         private modalController: ModalController,
     ) {
@@ -133,67 +133,81 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
 
     async onSubmit() {
         this.requestForm.markAllAsTouched();
-    
+
         if (this.requestForm.invalid) {
-          const errorModal = await this.modalController.create({
-            component: ErrorModalComponent,
-            componentProps: {
-              message: 'Please correct the errors in the form.'
-            }
-          });
-          await errorModal.present();
-        } else {
-          const formValue = this.requestForm.value;
-    
-          const domicilioRetiro = new Domicilio(
-            formValue.retiroCalle,
-            formValue.retiroNumero,
-            formValue.retiroLocalidad,
-            formValue.retiroProvincia,
-            formValue.retiroReferencia
-          );
-    
-          const domicilioEntrega = new Domicilio(
-            formValue.entregaCalle,
-            formValue.entregaNumero,
-            formValue.entregaLocalidad,
-            formValue.entregaProvincia,
-            formValue.entregaReferencia
-          );
-    
-          const tipoCarga = new TipoCarga(formValue.loadType);
-    
-          const pedidoEnvio = new PedidoEnvio(
-            new Date(formValue.pickupDate),
-            new Date(formValue.deliveryDate),
-            formValue.image,
-            formValue.observation,
-            domicilioEntrega,
-            domicilioRetiro,
-            tipoCarga
-          );
-    
-          try {
-            await this.pedidoEnvioService.create(pedidoEnvio).toPromise();
-            const successModal = await this.modalController.create({
-              component: SuccessModalComponent,
-              componentProps: {
-                message: 'Pedido creado con exito.'
-              }
-            });
-            await successModal.present();
-          } catch (error) {
             const errorModal = await this.modalController.create({
-              component: ErrorModalComponent,
-              componentProps: {
-                message: 'No se pudo crear el pedido. Intentelo mas tarde.'
-              }
+                component: ErrorModalComponent,
+                componentProps: {
+                    message: 'Please correct the errors in the form.'
+                }
             });
             await errorModal.present();
-          }
-        }
-      }
+        } else {
+            const formValue = this.requestForm.value;
 
+            const domicilioRetiro = new Domicilio(
+                formValue.retiroCalle,
+                formValue.retiroNumero,
+                formValue.retiroLocalidad,
+                formValue.retiroProvincia,
+                formValue.retiroReferencia
+            );
+
+            const domicilioEntrega = new Domicilio(
+                formValue.entregaCalle,
+                formValue.entregaNumero,
+                formValue.entregaLocalidad,
+                formValue.entregaProvincia,
+                formValue.entregaReferencia
+            );
+
+            const tipoCarga = new TipoCarga(formValue.loadType);
+
+            const images = this.imageList.map(item => {
+                if (typeof item === 'string') {
+                    return item;
+                } else {
+                    // Convert ArrayBuffer to a string if necessary
+                    // This example assumes converting to a data URL
+                    return this.arrayBufferToDataURL(item);
+                }
+            });
+
+            const pedidoEnvio = new PedidoEnvio(
+                new Date(formValue.pickupDate),
+                new Date(formValue.deliveryDate),
+                images,
+                formValue.observation,
+                domicilioEntrega,
+                domicilioRetiro,
+                tipoCarga
+            );
+
+            try {
+                await this.pedidoEnvioService.create(pedidoEnvio).toPromise();
+                const successModal = await this.modalController.create({
+                    component: SuccessModalComponent,
+                    componentProps: {
+                        message: 'Pedido creado con exito.'
+                    }
+                });
+                await successModal.present();
+            } catch (error) {
+                const errorModal = await this.modalController.create({
+                    component: ErrorModalComponent,
+                    componentProps: {
+                        message: 'No se pudo crear el pedido. Intentelo mas tarde.'
+                    }
+                });
+                await errorModal.present();
+            }
+        }
+    }
+
+    arrayBufferToDataURL(buffer: ArrayBuffer): string {
+        const blob = new Blob([buffer]);
+        return URL.createObjectURL(blob);
+    }
 
     onImagesSelected(imageData: Array<string | ArrayBuffer>) {
 
