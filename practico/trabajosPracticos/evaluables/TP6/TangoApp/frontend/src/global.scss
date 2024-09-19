@@ -40,14 +40,18 @@
 @import "~swiper/swiper-bundle.css";
 
 ion-item {
-    --background: var(--ion-color-medium); /* Set background color */
+    --background: var(--ion-color-medium);
+    /* Set background color */
     /* Optional: Custom text color */
     // --color: var(--custom-item-text-color);
 
     /* Add shadow effect */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
-    border-radius: 8px; /* Optional: Add rounded corners */
-    transition: box-shadow 0.3s ease-in-out; /* Smooth shadow transition */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Adds a subtle shadow */
+    border-radius: 8px;
+    /* Optional: Add rounded corners */
+    transition: box-shadow 0.3s ease-in-out;
+    /* Smooth shadow transition */
 }
 
 
@@ -70,4 +74,8 @@ ion-button {
 ion-toolbar {
     --background: var(--ion-color-primary);
     --color: var(--ion-color-primary-contrast);
+}
+
+* {
+    font-family: 'Times New Roman', Times, serif;
 }

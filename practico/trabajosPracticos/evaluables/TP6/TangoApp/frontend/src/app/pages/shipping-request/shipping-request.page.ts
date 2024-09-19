@@ -1,7 +1,7 @@
 import { TipoDeCargaService } from './../../services/tipo-de-carga/tipo-de-carga.service';
 import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonText, IonButton, IonSelectOption, IonRow, IonCol, IonList, IonButtons, IonMenuButton, ModalController } from '@ionic/angular/standalone';
 import { ELoadType } from 'src/app/ts/enums/load-type';
 import { FormModalSelectComponent } from "../../components/forms/form-modal-select/form-modal-select.component";
@@ -97,7 +97,7 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
             retiroReferencia: new FormControl(""),
 
             // la fecha de retiro
-            pickupDate: new FormControl<Date | null>(null, [Validators.required, Validators.min(1)]),
+            pickupDate: new FormControl<Date | null>(null, [Validators.required, this.pickupValidator()]),
 
             // dirección de entrega
             entregaCalle: new FormControl("", [Validators.required]),
@@ -107,28 +107,91 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
             entregaReferencia: new FormControl(""),
 
             // la fecha de entrega
-            deliveryDate: new FormControl<Date | null>(null, [Validators.required, Validators.min(1)]),
+            deliveryDate: new FormControl<Date | null>(null, [Validators.required, this.deliveryValidator()]),
 
             // observación (opcional)
             observation: new FormControl(""),
 
             // imagenes (opcional) 
             image: new FormControl(null)
-        }, { validators: this.dateValidator });
-
+        }, { validators: this.deliveryAfterPickupValidator() });
     }
+
 
     ngAfterViewInit(): void {
         this.onSwiperReady();
     }
 
 
-    dateValidator(control: AbstractControl): ValidationErrors | null {
-        const formGroup = control as FormGroup;
-        const pickupDate = formGroup.get('pickupDate')?.value;
-        const deliveryDate = formGroup.get('deliveryDate')?.value;
+    // dateValidator(control: AbstractControl): ValidationErrors | null {
+    //     const formGroup = control as FormGroup;
+    //     const pickupDate = formGroup.get('pickupDate')?.value;
+    //     const deliveryDate = formGroup.get('deliveryDate')?.value;
 
-        return deliveryDate >= pickupDate ? null : { dateInvalid: true };
+    //     return deliveryDate >= pickupDate ? null : { dateInvalid: true };
+    // }
+
+    pickupValidator(): ValidatorFn {
+        return (control: AbstractControl): ValidationErrors | null => {
+            const formGroup = control as FormGroup;
+
+            if (!formGroup.value || formGroup.value === '' || formGroup.value === null) {
+                return { pickupInvalid: true }; // One or both dates are invalid
+            }
+
+            const pickupDate: Date = new Date(formGroup.value);
+            const now = new Date();
+
+            const isPickupDateFuture = pickupDate > now;
+
+            if (!isPickupDateFuture) {
+                return { pickupNotFuture: true };
+            }
+
+            return null;
+        };
+    }
+
+    deliveryValidator(): ValidatorFn {
+        return (control: AbstractControl): ValidationErrors | null => {
+            const formGroup = control as FormGroup;
+
+            if (!formGroup.value || formGroup.value === '' || formGroup.value === null) {
+                return { dateInvalid: true }; // One or both dates are invalid
+            }
+
+            const deliveryDate: Date = new Date(formGroup.value);
+            const now = new Date();
+
+
+
+            const isDeliveryDateFuture = deliveryDate > now;
+
+            if (!isDeliveryDateFuture) {
+                return { dateNotFuture: true };
+            }
+
+            const pickupDate = formGroup.get('pickupDate')?.value;
+
+            if (pickupDate && deliveryDate && deliveryDate < pickupDate) {
+                return { deliveryBeforePickup: true };
+            }
+
+            return null;
+        };
+    }
+
+    deliveryAfterPickupValidator(): ValidatorFn {
+        return (formGroup: AbstractControl): ValidationErrors | null => {
+            const pickupDate = formGroup.get('pickupDate')?.value;
+            const deliveryDate = formGroup.get('deliveryDate')?.value;
+
+            if (pickupDate && deliveryDate && deliveryDate < pickupDate) {
+                return { deliveryBeforePickup: true };
+            }
+
+            return null;
+        };
     }
 
     async onSubmit() {
@@ -269,8 +332,6 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
 
     onSwiperReady() {
         this.swiper = this.swiperRef?.nativeElement.swiper;
-
-        console.log('swiper ready? ', this.swiper)
 
         this.swiper?.on('slideChange', this.onSlideChange.bind(this));
         if (this.swiper) this.swiper.allowTouchMove = false;
