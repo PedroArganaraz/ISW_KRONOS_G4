@@ -8,7 +8,7 @@ import { Doc } from 'src/app/ts/interfaces/database-docs/doc';
     providedIn: 'root'
 })
 export class DatabaseService {
-    ip = 'http://localhost:8080';
+    ip = 'localhost:8080';
 
     constructor(private http: HttpClient) { }
 
@@ -70,7 +70,6 @@ export class DatabaseService {
             return this.http.post<T>(url, JSON.stringify(doc), { headers });
         }
     }
-
 
     public setIP(newIp: string) {
         this.ip = newIp;

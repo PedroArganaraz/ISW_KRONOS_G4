@@ -7,95 +7,74 @@ import { Platform } from '@ionic/angular';
     providedIn: 'root',
 })
 export class PhotoService {
-
-    public photos: UserPhoto[] = [];
+    public photos: string[] = [];
     private platform: Platform;
+    private MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB in bytes
 
     constructor(platform: Platform) {
         this.platform = platform;
     }
 
-    async takePhoto() {
+    async takePhoto(): Promise<string> {
         const photo: Photo = await Camera.getPhoto({
-            resultType: CameraResultType.Uri,
+            resultType: CameraResultType.Base64,
             source: CameraSource.Camera,
             quality: 90,
+            width: 1080,
+            height: 1080,
+            correctOrientation: true
         });
 
-        const savedImageFile = await this.savePhoto(photo);
-        this.photos.unshift(savedImageFile);
-    }
-
-    private async savePhoto(photo: Photo): Promise<UserPhoto> {
-        // Convert photo to base64 format
-        const base64Data = await this.readAsBase64(photo);
-
-        // Write the file to the data directory
-        const fileName = new Date().getTime() + '.' + photo.format;
-        const savedFile = await Filesystem.writeFile({
-            path: fileName,
-            data: base64Data,
-            directory: Directory.Data,
-        });
-
-        return {
-            filepath: fileName,
-            webviewPath: photo.webPath
-        };
-    }
-
-    private async readAsBase64(photo: Photo): Promise<string> {
-        // Fetch the photo as a Blob, then convert to base64 format
-        if (this.platform.is('hybrid')) {
-            // Use FileSystem API for base64 on native devices
-            const file = await Filesystem.readFile({
-                path: photo.path!,
-            });
-
-            return (file.data instanceof Blob)
-                ? await this.convertBlobToBase64(file.data) as string
-                : file.data;
-
-        } else {
-            // Use web implementation for browser
-            const response = await fetch(photo.webPath!);
-            const blob = await response.blob();
-            return await this.convertBlobToBase64(blob) as string;
+        if (photo.base64String) {
+            // const processedImage = await this.processImage(photo.base64String);
+            // this.photos.unshift(processedImage);
+            // return processedImage;
+            console.log(photo.base64String)
+            return photo.base64String
         }
+        throw new Error('Failed to capture photo');
     }
 
-    private convertBlobToBase64(blob: Blob): Promise<string | ArrayBuffer> {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onerror = reject;
-            reader.onload = () => {
-                resolve(reader.result as string);
+    private async processImage(base64: string): Promise<string> {
+        return this.resizeAndCompressImage(base64);
+    }
+
+    private async resizeAndCompressImage(base64: string): Promise<string> {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d')!;
+                const scaleFactor = this.calculateScaleFactor(img.width, img.height);
+                canvas.width = img.width * scaleFactor;
+                canvas.height = img.height * scaleFactor;
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                this.compressImage(canvas).then(compressedBase64 => resolve(compressedBase64));
             };
-            reader.readAsDataURL(blob);
+            img.src = `data:image/jpeg;base64,${base64}`;
         });
     }
 
-    public async loadSavedPhotos() {
-        const photos = await Filesystem.readdir({
-            directory: Directory.Data,
-            path: ''
-        });
+    private calculateScaleFactor(width: number, height: number): number {
+        const maxDimension = 1080;
+        return Math.min(1, maxDimension / Math.max(width, height));
+    }
 
-        for (const file of photos.files) {
-            const filePath = `${Directory.Data}/${file}`;
-            const readFile = await Filesystem.readFile({
-                path: filePath
-            });
+    private async compressImage(canvas: HTMLCanvasElement): Promise<string> {
+        let quality = 0.9;
+        let base64 = canvas.toDataURL('image/jpeg', quality);
 
-            this.photos.unshift({
-                filepath: filePath,
-                webviewPath: `data:image/jpeg;base64,${readFile.data}`
-            });
+        while (this.getBase64Size(base64) > this.MAX_FILE_SIZE && quality > 0.1) {
+            quality -= 0.1;
+            base64 = canvas.toDataURL('image/jpeg', quality);
         }
-    }
-}
 
-export interface UserPhoto {
-    filepath: string;
-    webviewPath?: string;
+        return base64.split(',')[1]; // Remove the data:image/jpeg;base64, part
+    }
+
+    private getBase64Size(base64: string): number {
+        const base64Length = base64.length - (base64.indexOf(',') + 1);
+        const padding = (base64.charAt(base64.length - 2) === '=') ? 2 : ((base64.charAt(base64.length - 1) === '=') ? 1 : 0);
+        return base64Length * 0.75 - padding;
+    }
 }
