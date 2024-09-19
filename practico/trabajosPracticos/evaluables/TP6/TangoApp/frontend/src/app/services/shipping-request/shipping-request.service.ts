@@ -32,8 +32,9 @@ export class ShippingRequestService {
     }
 
     public create(pedido: PedidoEnvio): Observable<PedidoEnvio> {
+        console.log('Creating pedido:', JSON.stringify(pedido.toDoc()));
         return this.dbService.create<PedidoEnvioDoc>(pedido.toDoc(), DB_KEY).pipe(
-            map((doc: PedidoEnvioDoc) => PedidoEnvio.fromDoc(doc))
+            map(docPedido => PedidoEnvio.fromDoc(docPedido))
         );
     }
 }

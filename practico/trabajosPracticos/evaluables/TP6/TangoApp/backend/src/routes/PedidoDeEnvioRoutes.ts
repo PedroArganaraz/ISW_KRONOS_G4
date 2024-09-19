@@ -16,11 +16,13 @@ router.get('/pedidos-de-envio', (req: Request, res: Response) => {
 router.post('/pedidos-de-envio', (req: Request, res: Response) => {
     try {
         const data = req.body;
+        console.log(req)
 
         const imagenesPaths: string[] = [];
         if (data.imagenes) {
             data.imagenes.forEach((imagenBase64: string, index: number) => {
-                const base64Data = imagenBase64.replace(/^data:image\/png;base64,/, '');
+                const base64Data = imagenBase64.replace(/^data:image\/jpeg;base64,/, '');
+                
                 const filePath = path.join(__dirname, `../uploads/imagen${index}.png`);
                 fs.writeFileSync(filePath, base64Data, 'base64');
                 imagenesPaths.push(filePath);
@@ -40,7 +42,7 @@ router.post('/pedidos-de-envio', (req: Request, res: Response) => {
         enviarNotisPushATransportistas(title, message, wss);
         enviarMailATransportistas(nuevoPedido);
 
-    } catch (error) {
+    } catch (error: any) {
 
         res.status(400).json({ error: error.message });
     }
