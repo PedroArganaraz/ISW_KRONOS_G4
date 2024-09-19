@@ -247,7 +247,7 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
             );
 
             try {
-                await this.pedidoEnvioService.create(pedidoEnvio).toPromise();
+                await this.pedidoEnvioService.create(pedidoEnvio);
                 const successModal = await this.modalController.create({
                     component: SuccessModalComponent,
                     componentProps: {

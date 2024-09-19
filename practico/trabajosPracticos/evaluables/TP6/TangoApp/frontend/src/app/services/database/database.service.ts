@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Capacitor, CapacitorHttp } from '@capacitor/core';
+import { Capacitor, CapacitorHttp, HttpResponse } from '@capacitor/core';
 import { from, Observable } from 'rxjs';
 import { Doc } from 'src/app/ts/interfaces/database-docs/doc';
 
@@ -31,7 +31,7 @@ export class DatabaseService {
             );
         } else {
             // Use HttpClient for desktop
-            return this.http.get<Array<T>>(url);
+            return this.http.get<Array<T>>('http://' + url);
         }
     }
 
@@ -46,22 +46,28 @@ export class DatabaseService {
     }
 
     public create<T extends Doc>(doc: T, itemKey: string): Observable<T> {
-        console.log('doc to create ', doc);
-        const url = this.ip + '/' + itemKey;
+        console.log('doc to create ', JSON.stringify(doc));
+        const url = `${this.ip}/${itemKey}`;
 
         if (this.isMobilePlatform) {
             // Use CapacitorHttp for mobile
             return from(
-                CapacitorHttp.post({ url: 'https://' + url, data: doc })
-                    .then((response: any) => response.data as T)
-                    .catch(error => {
-                        console.error('Error creating data on mobile:', error);
-                        throw error;
-                    })
+                CapacitorHttp.post({
+                    url: 'https://' + url,
+                    headers: { 'Content-Type': 'application/json' },
+                    data: JSON.stringify(doc)
+                }).then((response: HttpResponse) => {
+                    console.log('Mobile response:', response);
+                    return response.data as T;
+                }).catch(error => {
+                    console.error('Error creating data on mobile:', error);
+                    throw error;
+                })
             );
         } else {
             // Use HttpClient for desktop
-            return this.http.post<T>(url, doc);
+            const headers = new HttpHeaders().set('Content-Type', 'application/json');
+            return this.http.post<T>(url, JSON.stringify(doc), { headers });
         }
     }
 
