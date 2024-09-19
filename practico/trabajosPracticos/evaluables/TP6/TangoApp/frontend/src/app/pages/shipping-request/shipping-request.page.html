@@ -98,12 +98,6 @@
 
                     <ion-col size="12">
                         <app-form-datetime formControlName="pickupDate" label="Fecha de Retiro"></app-form-datetime>
-                        <!-- @if (requestForm.get('pickupDate')?.touched && requestForm.get('pickupDate')?.invalid)
-                        {
-                        <ion-text color="danger">
-                            Fecha de retiro es requerida.
-                        </ion-text>
-                        } -->
 
                         @if(requestForm.get('pickupDate')?.touched &&
                         requestForm.get('pickupDate')?.hasError('pickupInvalid'))
@@ -112,7 +106,7 @@
                             Debe seleccionar una fecha.
                         </ion-text>
                         }
-                        @if (requestForm.get('pickupDate')?.touched &&
+                        @else if (requestForm.get('pickupDate')?.touched &&
                         requestForm.get('pickupDate')?.hasError('pickupNotFuture'))
                         {
                         <ion-text color="danger">
@@ -186,22 +180,6 @@
 
                     <ion-col size="12">
                         <app-form-datetime formControlName="deliveryDate" label="Fecha de Entrega"></app-form-datetime>
-                        @if(requestForm.hasError('dateInvalid'))
-                        {
-                        Debe seleccionar una fecha.
-                        }
-                        @else if (requestForm.hasError('deliveryBeforePickup'))
-                        {
-                        <ion-text color="danger">
-                            La fecha de entrega no puede ser anterior a la fecha de retiro.
-                        </ion-text>
-                        }
-                        @else if (requestForm.hasError('dateNotFuture'))
-                        {
-                        <ion-text>
-                            La fecha debe ser futura.
-                        </ion-text>
-                        }
 
                         @if(requestForm.get('deliveryDate')?.touched &&
                         requestForm.get('deliveryDate')?.hasError('dateInvalid'))

@@ -61,17 +61,6 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
         return !this.requestForm.invalid;
     }
 
-
-
-    // get loadTypes() {
-    //     // return Object.values(ELoadType);
-
-    //     return Object.keys(ELoadType).map((key) => ({
-    //         nombre: key,
-    //         id: ELoadType[key as keyof typeof ELoadType]
-    //     }));
-    // }
-
     constructor(
         private georefService: GeorefService,
         private tipoDeCargaService: TipoDeCargaService,
@@ -84,6 +73,7 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
     ngOnInit() {
         this.getProvincias();
         this.getTiposDeCarga();
+        this.getPedidos();
 
         this.requestForm = new FormGroup({
             // tipo de carga que debe ser transportado
@@ -121,15 +111,6 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
     ngAfterViewInit(): void {
         this.onSwiperReady();
     }
-
-
-    // dateValidator(control: AbstractControl): ValidationErrors | null {
-    //     const formGroup = control as FormGroup;
-    //     const pickupDate = formGroup.get('pickupDate')?.value;
-    //     const deliveryDate = formGroup.get('deliveryDate')?.value;
-
-    //     return deliveryDate >= pickupDate ? null : { dateInvalid: true };
-    // }
 
     pickupValidator(): ValidatorFn {
         return (control: AbstractControl): ValidationErrors | null => {
@@ -211,16 +192,16 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
             const domicilioRetiro = new Domicilio(
                 formValue.retiroCalle,
                 formValue.retiroNumero,
-                formValue.retiroLocalidad,
-                formValue.retiroProvincia,
+                this.getLocalidadRetiro(formValue.retiroLocalidad)?.nombre ?? '',
+                this.getProvincia(formValue.retiroProvincia)?.nombre ?? '',
                 formValue.retiroReferencia
             );
 
             const domicilioEntrega = new Domicilio(
                 formValue.entregaCalle,
                 formValue.entregaNumero,
-                formValue.entregaLocalidad,
-                formValue.entregaProvincia,
+                this.getLocalidadEntrega(formValue.entregaLocalidad)?.nombre ?? '',
+                this.getProvincia(formValue.entregaProvincia)?.nombre ?? '',
                 formValue.entregaReferencia
             );
 
@@ -291,6 +272,16 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
             this.loadTypes = response;
 
         });
+
+    }
+
+    getPedidos(): void {
+        this.pedidoEnvioService.getAll().subscribe((response: any) => {
+            console.log("PEDIDOS: ", response);
+        });
+        const pedido = new PedidoEnvio(new Date(), new Date(), [], 'una obs', new Domicilio('', '', '', '', ''), new Domicilio('', '', '', '', ''), new TipoCarga('Hacienda'));
+
+        this.pedidoEnvioService.create(pedido);
     }
 
     // Obtener localidades al seleccionar una provincia
@@ -340,14 +331,9 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
     }
 
     onSlideChange(swiper?: Swiper) {
-        // Get the active index and validate current slide's form controls
         this.activeIndex = (swiper ? swiper.activeIndex : this.swiper?.activeIndex) ?? 0;
 
         console.log('slide change ', this.activeIndex);
-        // if (activeIndex)
-        //     this.validateCurrentSlide(activeIndex);
-
-
     }
 
     swipeNext() {
@@ -360,8 +346,6 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
         }
         else {
             this.requestForm.markAllAsTouched();
-            // this.requestForm.updateValueAndValidity();
-            // this.requestForm.markAllAsTouched();
         }
 
     }
@@ -391,5 +375,17 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
 
         console.log('current slides ', fieldsToValidate)
         return fieldsToValidate.every(control => this.requestForm.get(control)?.valid);
+    }
+
+    getProvincia(id: string) {
+        return this.provincias.find((p) => p.id === id);
+    }
+
+    getLocalidadEntrega(id: string) {
+        return this.localidadesEntrega.find((p) => p.id === id);
+    }
+
+    getLocalidadRetiro(id: string) {
+        return this.localidadesRetiro.find((p) => p.id === id);
     }
 }
