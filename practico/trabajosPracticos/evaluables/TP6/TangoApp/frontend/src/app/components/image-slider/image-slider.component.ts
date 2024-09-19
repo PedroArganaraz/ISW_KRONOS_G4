@@ -4,6 +4,7 @@ import { addIcons } from 'ionicons';
 import { add, closeCircle } from 'ionicons/icons';
 import Swiper from 'swiper';
 // import 'swiper/swiper-bundle.min.css';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
     selector: 'app-image-slider',
@@ -27,6 +28,11 @@ export class ImageSliderComponent implements AfterViewInit {
 
     get canAddImages(): boolean {
         return this.images.length < this.limit;
+    }
+
+    get isAndorid(): boolean
+    {
+        return Capacitor.getPlatform() === 'android';
     }
 
     constructor() {
