@@ -55,9 +55,15 @@ export function createHTMLforMail(pedido: PedidoDeEnvio) {
               .imagen-container {
                   margin-bottom: 15px;
               }
+                            .imagenes-container {
+                  display: flex;
+                  flex-wrap: nowrap;
+                  overflow-x: auto;
+              }
               .imagen {
-                  max-width: 100%;
+                  max-width: auto;
                   height: auto;
+                  margin-right: 10px;
                   border-radius: 5px;
                   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
               }
@@ -106,7 +112,9 @@ export function createHTMLforMail(pedido: PedidoDeEnvio) {
   
               <div class="info-section">
                   <h2>Imágenes del pedido</h2>
-                  ${imgTags}
+                  <div class="imagenes-container">
+                      ${imgTags}
+                  </div>
               </div>
           </div>
       </body>
