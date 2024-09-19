@@ -1,7 +1,7 @@
 import { TipoDeCargaService } from './../../services/tipo-de-carga/tipo-de-carga.service';
 import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonText, IonButton, IonSelectOption, IonRow, IonCol, IonList, IonButtons, IonMenuButton, ModalController } from '@ionic/angular/standalone';
 import { ELoadType } from 'src/app/ts/enums/load-type';
 import { FormModalSelectComponent } from "../../components/forms/form-modal-select/form-modal-select.component";
@@ -61,17 +61,6 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
         return !this.requestForm.invalid;
     }
 
-
-
-    // get loadTypes() {
-    //     // return Object.values(ELoadType);
-
-    //     return Object.keys(ELoadType).map((key) => ({
-    //         nombre: key,
-    //         id: ELoadType[key as keyof typeof ELoadType]
-    //     }));
-    // }
-
     constructor(
         private georefService: GeorefService,
         private tipoDeCargaService: TipoDeCargaService,
@@ -84,6 +73,7 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
     ngOnInit() {
         this.getProvincias();
         this.getTiposDeCarga();
+        this.getPedidos();
 
         this.requestForm = new FormGroup({
             // tipo de carga que debe ser transportado
@@ -97,7 +87,7 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
             retiroReferencia: new FormControl(""),
 
             // la fecha de retiro
-            pickupDate: new FormControl<Date | null>(null, [Validators.required, Validators.min(1)]),
+            pickupDate: new FormControl<Date | null>(null, [Validators.required, this.pickupValidator()]),
 
             // dirección de entrega
             entregaCalle: new FormControl("", [Validators.required]),
@@ -107,28 +97,82 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
             entregaReferencia: new FormControl(""),
 
             // la fecha de entrega
-            deliveryDate: new FormControl<Date | null>(null, [Validators.required, Validators.min(1)]),
+            deliveryDate: new FormControl<Date | null>(null, [Validators.required, this.deliveryValidator()]),
 
             // observación (opcional)
             observation: new FormControl(""),
 
             // imagenes (opcional) 
             image: new FormControl(null)
-        }, { validators: this.dateValidator });
-
+        }, { validators: this.deliveryAfterPickupValidator() });
     }
+
 
     ngAfterViewInit(): void {
         this.onSwiperReady();
     }
 
+    pickupValidator(): ValidatorFn {
+        return (control: AbstractControl): ValidationErrors | null => {
+            const formGroup = control as FormGroup;
 
-    dateValidator(control: AbstractControl): ValidationErrors | null {
-        const formGroup = control as FormGroup;
-        const pickupDate = formGroup.get('pickupDate')?.value;
-        const deliveryDate = formGroup.get('deliveryDate')?.value;
+            if (!formGroup.value || formGroup.value === '' || formGroup.value === null) {
+                return { pickupInvalid: true }; // One or both dates are invalid
+            }
 
-        return deliveryDate >= pickupDate ? null : { dateInvalid: true };
+            const pickupDate: Date = new Date(formGroup.value);
+            const now = new Date();
+
+            const isPickupDateFuture = pickupDate > now;
+
+            if (!isPickupDateFuture) {
+                return { pickupNotFuture: true };
+            }
+
+            return null;
+        };
+    }
+
+    deliveryValidator(): ValidatorFn {
+        return (control: AbstractControl): ValidationErrors | null => {
+            const formGroup = control as FormGroup;
+
+            if (!formGroup.value || formGroup.value === '' || formGroup.value === null) {
+                return { dateInvalid: true }; // One or both dates are invalid
+            }
+
+            const deliveryDate: Date = new Date(formGroup.value);
+            const now = new Date();
+
+
+
+            const isDeliveryDateFuture = deliveryDate > now;
+
+            if (!isDeliveryDateFuture) {
+                return { dateNotFuture: true };
+            }
+
+            const pickupDate = formGroup.get('pickupDate')?.value;
+
+            if (pickupDate && deliveryDate && deliveryDate < pickupDate) {
+                return { deliveryBeforePickup: true };
+            }
+
+            return null;
+        };
+    }
+
+    deliveryAfterPickupValidator(): ValidatorFn {
+        return (formGroup: AbstractControl): ValidationErrors | null => {
+            const pickupDate = formGroup.get('pickupDate')?.value;
+            const deliveryDate = formGroup.get('deliveryDate')?.value;
+
+            if (pickupDate && deliveryDate && deliveryDate < pickupDate) {
+                return { deliveryBeforePickup: true };
+            }
+
+            return null;
+        };
     }
 
     async onSubmit() {
@@ -148,16 +192,16 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
             const domicilioRetiro = new Domicilio(
                 formValue.retiroCalle,
                 formValue.retiroNumero,
-                formValue.retiroLocalidad,
-                formValue.retiroProvincia,
+                this.getLocalidadRetiro(formValue.retiroLocalidad)?.nombre ?? '',
+                this.getProvincia(formValue.retiroProvincia)?.nombre ?? '',
                 formValue.retiroReferencia
             );
 
             const domicilioEntrega = new Domicilio(
                 formValue.entregaCalle,
                 formValue.entregaNumero,
-                formValue.entregaLocalidad,
-                formValue.entregaProvincia,
+                this.getLocalidadEntrega(formValue.entregaLocalidad)?.nombre ?? '',
+                this.getProvincia(formValue.entregaProvincia)?.nombre ?? '',
                 formValue.entregaReferencia
             );
 
@@ -228,6 +272,16 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
             this.loadTypes = response;
 
         });
+
+    }
+
+    getPedidos(): void {
+        this.pedidoEnvioService.getAll().subscribe((response: any) => {
+            console.log("PEDIDOS: ", response);
+        });
+        const pedido = new PedidoEnvio(new Date(), new Date(), [], 'una obs', new Domicilio('', '', '', '', ''), new Domicilio('', '', '', '', ''), new TipoCarga('Hacienda'));
+
+        this.pedidoEnvioService.create(pedido);
     }
 
     // Obtener localidades al seleccionar una provincia
@@ -270,8 +324,6 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
     onSwiperReady() {
         this.swiper = this.swiperRef?.nativeElement.swiper;
 
-        console.log('swiper ready? ', this.swiper)
-
         this.swiper?.on('slideChange', this.onSlideChange.bind(this));
         if (this.swiper) this.swiper.allowTouchMove = false;
 
@@ -279,14 +331,9 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
     }
 
     onSlideChange(swiper?: Swiper) {
-        // Get the active index and validate current slide's form controls
         this.activeIndex = (swiper ? swiper.activeIndex : this.swiper?.activeIndex) ?? 0;
 
         console.log('slide change ', this.activeIndex);
-        // if (activeIndex)
-        //     this.validateCurrentSlide(activeIndex);
-
-
     }
 
     swipeNext() {
@@ -299,8 +346,6 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
         }
         else {
             this.requestForm.markAllAsTouched();
-            // this.requestForm.updateValueAndValidity();
-            // this.requestForm.markAllAsTouched();
         }
 
     }
@@ -330,5 +375,17 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
 
         console.log('current slides ', fieldsToValidate)
         return fieldsToValidate.every(control => this.requestForm.get(control)?.valid);
+    }
+
+    getProvincia(id: string) {
+        return this.provincias.find((p) => p.id === id);
+    }
+
+    getLocalidadEntrega(id: string) {
+        return this.localidadesEntrega.find((p) => p.id === id);
+    }
+
+    getLocalidadRetiro(id: string) {
+        return this.localidadesRetiro.find((p) => p.id === id);
     }
 }

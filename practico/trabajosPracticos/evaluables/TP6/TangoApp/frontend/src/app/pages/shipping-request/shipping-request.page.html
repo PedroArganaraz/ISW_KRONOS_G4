@@ -48,14 +48,13 @@
                         <ion-col size="4">
 
                             <app-form-input-number formControlName="retiroNumero"
-                                label="Número"></app-form-input-number>
+                                label="Nro"></app-form-input-number>
                             @if (requestForm.get('retiroNumero')?.touched && requestForm.get('retiroNumero')?.invalid)
                             {
                             <ion-text color="danger">
                                 @if (requestForm.get('retiroNumero')?.errors?.['required'])
                                 {
-                                <span>Número es
-                                    requerido.</span>
+                                <span>Número debe ser un entero positivo.</span>
                                 }
                             </ion-text>
                             }
@@ -99,10 +98,19 @@
 
                     <ion-col size="12">
                         <app-form-datetime formControlName="pickupDate" label="Fecha de Retiro"></app-form-datetime>
-                        @if (requestForm.get('pickupDate')?.touched && requestForm.get('pickupDate')?.invalid)
+
+                        @if(requestForm.get('pickupDate')?.touched &&
+                        requestForm.get('pickupDate')?.hasError('pickupInvalid'))
                         {
                         <ion-text color="danger">
-                            Fecha de retiro es requerida.
+                            Debe seleccionar una fecha.
+                        </ion-text>
+                        }
+                        @else if (requestForm.get('pickupDate')?.touched &&
+                        requestForm.get('pickupDate')?.hasError('pickupNotFuture'))
+                        {
+                        <ion-text color="danger">
+                            La fecha debe ser futura.
                         </ion-text>
                         }
                     </ion-col>
@@ -125,11 +133,11 @@
 
                         <ion-col size="4">
                             <app-form-input-number formControlName="entregaNumero"
-                                label="Número"></app-form-input-number>
+                                label="Nro"></app-form-input-number>
                             @if (requestForm.get('entregaNumero')?.touched && requestForm.get('entregaNumero')?.invalid)
                             {
                             <ion-text color="danger">
-                                Número es requerido.
+                                Número debe ser un entero positivo.
                             </ion-text>
                             }
 
@@ -172,7 +180,23 @@
 
                     <ion-col size="12">
                         <app-form-datetime formControlName="deliveryDate" label="Fecha de Entrega"></app-form-datetime>
-                        @if (requestForm.hasError('dateInvalid'))
+
+                        @if(requestForm.get('deliveryDate')?.touched &&
+                        requestForm.get('deliveryDate')?.hasError('dateInvalid'))
+                        {
+                        <ion-text color="danger">
+                            Debe seleccionar una fecha.
+                        </ion-text>
+                        }
+                        @else if (requestForm.get('deliveryDate')?.touched &&
+                        requestForm.get('deliveryDate')?.hasError('dateNotFuture'))
+                        {
+                        <ion-text color="danger">
+                            La fecha debe ser futura.
+                        </ion-text>
+                        }
+                        @else if (requestForm.get('deliveryDate')?.touched &&
+                        requestForm.hasError('deliveryBeforePickup'))
                         {
                         <ion-text color="danger">
                             La fecha de entrega no puede ser anterior a la fecha de retiro.

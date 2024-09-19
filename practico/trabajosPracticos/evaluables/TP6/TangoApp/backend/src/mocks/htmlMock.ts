@@ -22,7 +22,7 @@ export function createHTMLforMail(pedido: PedidoDeEnvio) {
           <title>Nuevo Pedido de Envío</title>
           <style>
               body {
-                  font-family: Arial, sans-serif;
+                  font-family: Times New Roman, serif;
                   line-height: 1.6;
                   color: #333;
                   max-width: 600px;
@@ -80,7 +80,7 @@ export function createHTMLforMail(pedido: PedidoDeEnvio) {
                       <strong>Fecha de retiro:</strong> ${formatDate(pedido.fechaRetiro)}
                   </div>
                   <div class="info-item">
-                      <strong>Domicilio de retiro:</strong> ${pedido.domicilioRetiro.calle} ${pedido.domicilioRetiro.numero}, ${pedido.domicilioRetiro.localidad}
+                      <strong>Domicilio de retiro:</strong> ${pedido.domicilioRetiro.calle} ${pedido.domicilioRetiro.numero}, ${pedido.domicilioRetiro.localidad}, ${pedido.domicilioRetiro.provincia}
                   </div>
               </div>
   
@@ -90,7 +90,7 @@ export function createHTMLforMail(pedido: PedidoDeEnvio) {
                       <strong>Fecha de entrega:</strong> ${formatDate(pedido.fechaEntrega)}
                   </div>
                   <div class="info-item">
-                      <strong>Domicilio de entrega:</strong> ${pedido.domicilioEntrega.calle} ${pedido.domicilioEntrega.numero}, ${pedido.domicilioEntrega.localidad}
+                      <strong>Domicilio de entrega:</strong> ${pedido.domicilioEntrega.calle} ${pedido.domicilioEntrega.numero}, ${pedido.domicilioEntrega.localidad}, ${pedido.domicilioEntrega.provincia}
                   </div>
               </div>
   

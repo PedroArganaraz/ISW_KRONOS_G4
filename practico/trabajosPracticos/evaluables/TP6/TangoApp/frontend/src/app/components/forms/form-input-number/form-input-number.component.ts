@@ -50,7 +50,14 @@ export class FormInputNumberComponent implements ControlValueAccessor {
     onInputChange(event: any): void {
         const inputValue = event.target.value;
         const numericValue = inputValue !== '' ? Number(inputValue) : null;
-        this.value = numericValue;
+
+        // Ensure the value is a positive number
+        if (numericValue !== null && numericValue < 0) {
+            this.value = null; // or set to a default positive value if preferred
+        } else {
+            this.value = numericValue;
+        }
+
         this.onChange(this.value);
         this.onTouched();
     }
