@@ -279,9 +279,6 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
         this.pedidoEnvioService.getAll().subscribe((response: any) => {
             console.log("PEDIDOS: ", response);
         });
-        const pedido = new PedidoEnvio(new Date(), new Date(), [], 'una obs', new Domicilio('', '', '', '', ''), new Domicilio('', '', '', '', ''), new TipoCarga('Hacienda'));
-
-        this.pedidoEnvioService.create(pedido);
     }
 
     // Obtener localidades al seleccionar una provincia

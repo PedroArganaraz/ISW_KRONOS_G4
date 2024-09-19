@@ -66,8 +66,6 @@ export class DatabaseService {
         } else {
             console.log('not mobile');
 
-            const pedido = new PedidoEnvio(new Date(), new Date(), [], 'una obs', new Domicilio('', '', '', '', ''), new Domicilio('', '', '', '', ''), new TipoCarga('Hacienda'));
-
             console.log('http service ', this.http);
 
 
