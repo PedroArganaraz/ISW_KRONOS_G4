@@ -65,7 +65,6 @@ export class DatabaseService {
             );
         } else {
             console.log('not mobile');
-
             console.log('http service ', this.http);
 
 
