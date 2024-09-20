@@ -1,0 +1,13 @@
+<ion-button (click)="selectImage()">
+    Add Image
+</ion-button>
+
+<input type="file" accept="image/*" #fileInput hidden (change)="onFileSelected($event)" />
+
+<!-- @if (imageSrc)
+{
+<div>
+    <h3>Selected Image:</h3>
+    <img [src]="imageSrc" alt="Selected image" />
+</div>
+} -->

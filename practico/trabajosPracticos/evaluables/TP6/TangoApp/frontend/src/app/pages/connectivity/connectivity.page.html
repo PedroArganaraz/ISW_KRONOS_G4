@@ -1,0 +1,15 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Pedido de Envío</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <form [formGroup]="ipForm" (ngSubmit)="onSubmit()" style="height: 100%;">
+        <app-form-input formControlName="ip" label="Ip"/>
+        <ion-button type="submit">Enviar</ion-button>
+    </form>
+</ion-content>

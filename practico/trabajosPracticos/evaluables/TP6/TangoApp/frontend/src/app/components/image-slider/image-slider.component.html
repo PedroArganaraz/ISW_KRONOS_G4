@@ -1,0 +1,33 @@
+<!-- <swiper-container class="swiper-container" slidesPerView="auto" [spaceBetween]="10">
+    @for (image of images; track $index)
+    {
+    <swiper-slide class="swiper-slide">
+        <div class="image-card">
+
+            <ion-img [src]="image" alt="Image slide" />
+        </div>
+    </swiper-slide>
+    }
+
+    <swiper-pagination></swiper-pagination>
+</swiper-container> -->
+
+<ion-row>
+    @if (canAddImages)
+    {
+    <ion-card class='image-card clickable-card' (click)="selectImage()">
+        <ion-card-content>
+            <ion-icon name="add" class="center-icon"></ion-icon>
+        </ion-card-content>
+    </ion-card>
+    }
+    @for (image of images; track $index; let i = $index)
+    {
+    <ion-card class='image-card'>
+        <ion-img [src]="image" alt="Image slide" />
+        <ion-icon name="close-circle" class="remove-icon" (click)="removeImage(i)" />
+    </ion-card>
+    }
+</ion-row>
+
+<input type="file" accept="image/*" #fileInput hidden (change)="onFileSelected($event)" />

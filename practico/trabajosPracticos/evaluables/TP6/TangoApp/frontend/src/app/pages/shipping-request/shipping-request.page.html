@@ -1,0 +1,242 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Pedido de Envío</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+    <form [formGroup]="requestForm" (ngSubmit)="onSubmit()" style="height: 100%;">
+        <swiper-container #swiper pagination="true" class="mySwiper" style="height: 90%;">
+            <swiper-slide>
+                <ion-row>
+                    <ion-col size="12">
+                        <app-form-select formControlName="loadType" [options]="loadTypes"
+                            label="Tipo de Carga"></app-form-select>
+
+                        @if (requestForm.get('loadType')?.touched && requestForm.get('loadType')?.invalid)
+                        {
+                        <ion-text color="danger">
+                            Tipo de carga es requerido.
+                        </ion-text>
+                        }
+                    </ion-col>
+
+                    <ion-row size="12">
+                        <ion-col size="8">
+                            <app-form-input formControlName="retiroCalle" label="Calle"></app-form-input>
+                            @if (requestForm.get('retiroCalle')?.touched && requestForm.get('retiroCalle')?.invalid)
+                            {
+                            <ion-text color="danger">
+                                @if (requestForm.get('retiroCalle')?.errors?.['required'])
+                                {
+                                <span>Calle es
+                                    requerida.</span>
+                                }
+                                @else if (requestForm.get('retiroCalle')?.errors?.['minlength'])
+                                {
+                                <span>Calle debe tener al
+                                    menos 3 caracteres.</span>
+                                }
+                            </ion-text>
+                            }
+
+                        </ion-col>
+
+                        <ion-col size="4">
+
+                            <app-form-input-number formControlName="retiroNumero"
+                                label="Nro"></app-form-input-number>
+                            @if (requestForm.get('retiroNumero')?.touched && requestForm.get('retiroNumero')?.invalid)
+                            {
+                            <ion-text color="danger">
+                                @if (requestForm.get('retiroNumero')?.errors?.['required'])
+                                {
+                                <span>Número debe ser un entero positivo.</span>
+                                }
+                            </ion-text>
+                            }
+                        </ion-col>
+
+                    </ion-row>
+
+                    <ion-col size="12">
+                        <app-form-modal-select formControlName="retiroProvincia" [options]="provincias"
+                            label="Provincia" (valueChange)="onProvinciaRetiroChange($event)"
+                            selectText="Seleccione una Provincia">
+                        </app-form-modal-select>
+                        @if (requestForm.get('retiroProvincia')?.touched &&
+                        requestForm.get('retiroProvincia')?.invalid)
+                        {
+                        <ion-text color="danger">
+                            Provincia es requerida.
+                        </ion-text>
+                        }
+                    </ion-col>
+
+                    <ion-col size="12">
+
+                        <app-form-modal-select formControlName="retiroLocalidad" [options]="localidadesRetiro"
+                            label="Localidad" selectText="Seleccione una Localidad">
+                        </app-form-modal-select>
+
+                        @if (requestForm.get('retiroLocalidad')?.touched &&
+                        requestForm.get('retiroLocalidad')?.invalid)
+                        {
+                        <ion-text color="danger">
+                            Localidad es requerida.
+                        </ion-text>
+                        }
+                    </ion-col>
+
+                    <ion-col size="12">
+                        <app-form-input formControlName="retiroReferencia" label="Referencia"></app-form-input>
+                    </ion-col>
+
+
+                    <ion-col size="12">
+                        <app-form-datetime formControlName="pickupDate" label="Fecha de Retiro"></app-form-datetime>
+
+                        @if(requestForm.get('pickupDate')?.touched &&
+                        requestForm.get('pickupDate')?.hasError('pickupInvalid'))
+                        {
+                        <ion-text color="danger">
+                            Debe seleccionar una fecha.
+                        </ion-text>
+                        }
+                        @else if (requestForm.get('pickupDate')?.touched &&
+                        requestForm.get('pickupDate')?.hasError('pickupNotFuture'))
+                        {
+                        <ion-text color="danger">
+                            La fecha debe ser futura.
+                        </ion-text>
+                        }
+                    </ion-col>
+                </ion-row>
+            </swiper-slide>
+
+            <swiper-slide>
+                <ion-row>
+                    <ion-row size="12">
+                        <ion-col size="8">
+                            <app-form-input formControlName="entregaCalle" label="Calle"></app-form-input>
+                            @if (requestForm.get('entregaCalle')?.touched && requestForm.get('entregaCalle')?.invalid)
+                            {
+                            <ion-text color="danger">
+                                Calle es requerida.
+                            </ion-text>
+                            }
+
+                        </ion-col>
+
+                        <ion-col size="4">
+                            <app-form-input-number formControlName="entregaNumero"
+                                label="Nro"></app-form-input-number>
+                            @if (requestForm.get('entregaNumero')?.touched && requestForm.get('entregaNumero')?.invalid)
+                            {
+                            <ion-text color="danger">
+                                Número debe ser un entero positivo.
+                            </ion-text>
+                            }
+
+                        </ion-col>
+                    </ion-row>
+
+                    <ion-col size="12">
+                        <app-form-modal-select formControlName="entregaProvincia" [options]="provincias"
+                            label="Provincia" (valueChange)="onProvinciaEntregaChange($event)"
+                            selectText="Seleccione una Provincia">
+                        </app-form-modal-select>
+
+                        @if (requestForm.get('entregaProvincia')?.touched &&
+                        requestForm.get('entregaProvincia')?.invalid)
+                        {
+                        <ion-text color="danger">
+                            Provincia es requerida.
+                        </ion-text>
+                        }
+                    </ion-col>
+
+                    <ion-col size="12">
+                        <app-form-modal-select formControlName="entregaLocalidad" [options]="localidadesEntrega"
+                            label="Localidad" selectText="Seleccione una Localidad">
+                        </app-form-modal-select>
+
+                        @if (requestForm.get('entregaLocalidad')?.touched &&
+                        requestForm.get('entregaLocalidad')?.invalid)
+                        {
+                        <ion-text color="danger">
+                            Localidad es requerida.
+                        </ion-text>
+                        }
+                    </ion-col>
+
+                    <ion-col size="12">
+                        <app-form-input formControlName="entregaReferencia" label="Referencia"></app-form-input>
+                    </ion-col>
+
+
+                    <ion-col size="12">
+                        <app-form-datetime formControlName="deliveryDate" label="Fecha de Entrega"></app-form-datetime>
+
+                        @if(requestForm.get('deliveryDate')?.touched &&
+                        requestForm.get('deliveryDate')?.hasError('dateInvalid'))
+                        {
+                        <ion-text color="danger">
+                            Debe seleccionar una fecha.
+                        </ion-text>
+                        }
+                        @else if (requestForm.get('deliveryDate')?.touched &&
+                        requestForm.get('deliveryDate')?.hasError('dateNotFuture'))
+                        {
+                        <ion-text color="danger">
+                            La fecha debe ser futura.
+                        </ion-text>
+                        }
+                        @else if (requestForm.get('deliveryDate')?.touched &&
+                        requestForm.hasError('deliveryBeforePickup'))
+                        {
+                        <ion-text color="danger">
+                            La fecha de entrega no puede ser anterior a la fecha de retiro.
+                        </ion-text>
+                        }
+                    </ion-col>
+                </ion-row>
+            </swiper-slide>
+
+            <swiper-slide>
+                <ion-row>
+                    <ion-col size="12">
+                        <app-form-textarea formControlName="observation" label="Observación"></app-form-textarea>
+                    </ion-col>
+
+                    <ion-col>
+                        <app-image-slider (imagesSelected)="onImagesSelected($event)" [limit]="3"></app-image-slider>
+                    </ion-col>
+                </ion-row>
+            </swiper-slide>
+        </swiper-container>
+        <ion-col style="justify-content: space-between; width: 100%; display: flex;">
+            @if (activeIndex > 0)
+            {
+            <ion-button (click)="swipePrev()">Volver</ion-button>
+            }
+            @else {
+            <div>
+
+            </div>
+            }
+
+            @if(activeIndex === lastIndex)
+            {
+            <ion-button type="submit" [disabled]="!isFormValid">Enviar</ion-button>
+            }
+            @else
+            {
+            <ion-button (click)="swipeNext()">Continuar</ion-button>
+            }
+        </ion-col>
+    </form>
+</ion-content>
