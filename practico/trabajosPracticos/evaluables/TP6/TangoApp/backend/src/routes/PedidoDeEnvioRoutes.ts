@@ -22,7 +22,7 @@ router.post('/pedidos-de-envio', (req: Request, res: Response) => {
         if (data.imagenes) {
             data.imagenes.forEach((imagenBase64: string, index: number) => {
                 const base64Data = imagenBase64.replace(/^data:image\/jpeg;base64,/, '');
-                
+
                 const filePath = path.join(__dirname, `../uploads/imagen${index}.png`);
                 fs.writeFileSync(filePath, base64Data, 'base64');
                 imagenesPaths.push(filePath);
@@ -33,14 +33,17 @@ router.post('/pedidos-de-envio', (req: Request, res: Response) => {
         nuevoPedido.imagenes = imagenesPaths;
         addPedidoDeEnvio(nuevoPedido);
         res.status(201).json(nuevoPedido);
-        
+
         console.log(nuevoPedido);
 
         // Como se creo, tenemos que notificar
         var title = "Nuevo pedido de envío disponible";
         var message = "Hay un pedido de envío en tu zona. ¡Revisa los detalles y no pierdas esta oportunidad!";
-        enviarNotisPushATransportistas(title, message, wss);
-        enviarMailATransportistas(nuevoPedido);
+
+        if (req.body.domicilioEntrega.localidad == "Villa Carlos Paz" && req.body.domicilioRetiro.localidad == "Villa Carlos Paz") {
+            enviarNotisPushATransportistas(title, message, wss);
+            enviarMailATransportistas(nuevoPedido);
+        }
 
     } catch (error: any) {
 

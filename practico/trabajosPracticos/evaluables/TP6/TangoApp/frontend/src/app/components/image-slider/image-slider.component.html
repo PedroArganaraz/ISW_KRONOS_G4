@@ -15,7 +15,7 @@
 <ion-row>
     @if (canAddImages)
     {
-    <ion-card class='image-card clickable-card' (click)="selectImage()">
+    <ion-card [class]='"image-card" + ((isAndorid) ? "-mobile" : "") + " clickable-card"' (click)="selectImage()">
         <ion-card-content>
             <ion-icon name="add" class="center-icon"></ion-icon>
         </ion-card-content>
@@ -23,8 +23,15 @@
     }
     @for (image of images; track $index; let i = $index)
     {
-    <ion-card class='image-card'>
+    <ion-card [class]='"image-card" + ((isAndorid) ? "-mobile" : "") + " clickable-card"'>
+        @if (isAndorid)
+        {
+        <img [src]="image" alt="Image slide" />
+        }
+        @else
+        {
         <ion-img [src]="image" alt="Image slide" />
+        }
         <ion-icon name="close-circle" class="remove-icon" (click)="removeImage(i)" />
     </ion-card>
     }

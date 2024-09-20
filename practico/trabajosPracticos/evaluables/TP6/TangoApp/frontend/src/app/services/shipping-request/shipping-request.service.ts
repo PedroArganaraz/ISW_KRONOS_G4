@@ -22,7 +22,7 @@ export class ShippingRequestService {
     public async set(data: PedidoEnvio): Promise<void> {
         const doc = data.toDoc();
 
-        this.dbService.set<PedidoEnvioDoc>(doc);
+        this.dbService.set<PedidoEnvioDoc>(doc, DB_KEY);
     }
 
     public getAll(): Observable<Array<PedidoEnvio>> {
@@ -33,7 +33,7 @@ export class ShippingRequestService {
 
     public create(pedido: PedidoEnvio): Observable<PedidoEnvio> {
         console.log('Creating pedido:', JSON.stringify(pedido.toDoc()));
-        return this.dbService.create<PedidoEnvioDoc>(pedido.toDoc(), DB_KEY).pipe(
+        return this.dbService.set<PedidoEnvioDoc>(pedido.toDoc(), DB_KEY).pipe(
             map(docPedido => PedidoEnvio.fromDoc(docPedido))
         );
     }
