@@ -35,6 +35,7 @@
 | Bibliografía | ISW&#95;BIBLIO&#95;&lt;NombreLibro&gt;&#95;&lt;Idioma&gt;.pdf | /teorico/bibliografia/&lt;tema&gt; |
 | Consigna | &lt;TipoDeTP&gt;&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;CON&#95;2024&#95;KRONOS.pdf | /practico/trabajosPracticos/&lt;TipoDeTp&gt; |
 | Cronograma | ISW&#95;CRON&#95;4K1&#95;2024.xslx | /planificacion |
+| Documento de Buenas Prácticas | TPPR&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;DocumentoBuenasPracticas&#95;2024&#95;KRONOS.pdf | /practico/trabajosPracticos/tpProgramable |
 | Guía | ISW&#95;GUIA&#95;&lt;Descripcion&gt;&#95;2024.pdf | /practico/herramientasDeApoyo/guias |
 | Plantillas | ISW&#95;TEMPLATE&#95;&lt;Descripcion&gt;&#95;2024.pdf | /practico/herramientasDeApoyo/plantillas |
 | Presentaciones | ISW&#95;PRES&#95;&lt;NroPres&gt;&#95;&lt;Descripcion&gt;&#95;2024.pdf | /teorico/presentaciones |
@@ -44,7 +45,7 @@
 | TP Evaluables Entregable | TPE&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;RES&#95;ENTR&#95;2024&#95;KRONOS.pdf | /practico/trabajoPracticos/evaluables/TP&lt;NroTp&gt; |
 | TP No Evaluables Editable | TPNE&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;RES&#95;EDIT&#95;2024&#95;KRONOS.docx | /practico/trabajosPracticos/noEvaluables/TP&lt;NroTp&gt; |
 | TP No Evaluables Entregable | TPNE&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;RES&#95;ENTR&#95;2024&#95;KRONOS.pdf| /practico/trabajosPracticos/noEvaluables/TP&lt;NroTp&gt; |
-| TP Programable | TPPR&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;2024&#95;KRONOS.&lt;ext&gt; | /practico/trabajosPracticos |
+| TP Programable | TPPR&#95;&lt;NroTP&gt;&#95;&lt;Descripcion&gt;&#95;2024&#95;KRONOS.&lt;ext&gt; | /practico/trabajosPracticos/tpProgramable |
 
 
 ## Glosario
@@ -83,7 +84,7 @@
 | &lt;NroPres&gt; | Numero Natural Correspondiente al Numero de la Presentación |
 | &lt;NroTp&gt; | Numero Natural Correspondiente al Numero del Trabajo Práctico |
 | &lt;Tema&gt; | Representa el Tema del teórico, pudiendo ser SCM, agile, ingenieriaDeSoftware, lean&Kanban o testingDeSoftware |
-| &lt;TipoDeTp&gt; | Representa el Tipo de Trabajo Práctico, pudiendo ser TPE o TPNE |
+| &lt;TipoDeTp&gt; | Representa el Tipo de Trabajo Práctico, pudiendo ser TPE, TPNE o TPPR |
 
 
 ## Criterio de Línea Base
