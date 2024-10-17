@@ -113,7 +113,7 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
     }
 
     pickupValidator(): ValidatorFn {
-        return (control: AbstractControl): ValidationErrors | null => {
+        let func = (control: AbstractControl): ValidationErrors | null => {
             const formGroup = control as FormGroup;
 
             if (!formGroup.value || formGroup.value === '' || formGroup.value === null) {
@@ -127,64 +127,12 @@ export class ShippingRequestPage implements OnInit, AfterViewInit {
 
             if (!isPickupDateFuture) {
                 return { pickupNotFuture: true };
-
-            if (!formGroup.value || formGroup.value === '' || formGroup.value === null) {
-                return { pickupInvalid: true }; // One or both dates are invalid
-            }
-
-            const pickupDate: Date = new Date(formGroup.value);
-            const now = new Date();
-
-            const isPickupDateFuture = pickupDate > now;
-
-            if (!isPickupDateFuture) {
-                return { pickupNotFuture: true };
             }
 
             return null;
-        };
-    }
+        }
 
-    deliveryValidator(): ValidatorFn {
-        return (control: AbstractControl): ValidationErrors | null => {
-            const formGroup = control as FormGroup;
-
-            if (!formGroup.value || formGroup.value === '' || formGroup.value === null) {
-                return { dateInvalid: true }; // One or both dates are invalid
-            }
-
-            const deliveryDate: Date = new Date(formGroup.value);
-            const now = new Date();
-
-
-
-            const isDeliveryDateFuture = deliveryDate > now;
-
-            if (!isDeliveryDateFuture) {
-                return { dateNotFuture: true };
-            }
-
-            const pickupDate = formGroup.get('pickupDate')?.value;
-
-            if (pickupDate && deliveryDate && deliveryDate < pickupDate) {
-                return { deliveryBeforePickup: true };
-            }
-
-            return null;
-        };
-    }
-
-    deliveryAfterPickupValidator(): ValidatorFn {
-        return (formGroup: AbstractControl): ValidationErrors | null => {
-            const pickupDate = formGroup.get('pickupDate')?.value;
-            const deliveryDate = formGroup.get('deliveryDate')?.value;
-
-            if (pickupDate && deliveryDate && deliveryDate < pickupDate) {
-                return { deliveryBeforePickup: true };
-            }
-
-            return null;
-        };
+        return func;
     }
 
     deliveryValidator(): ValidatorFn {
